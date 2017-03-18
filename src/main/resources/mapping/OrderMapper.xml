@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.heitian.ssm.dao.OrderDao">
+
+    <resultMap id="OrderBaseMap" type="com.heitian.ssm.model.Order">
+        <id column="OrderID" property="oid" jdbcType="BIGINT"/>
+        <result column="UserID" property="ouid" jdbcType="BIGINT"/>
+        <result column="Amount" property="amount" jdbcType="BIGINT"/>
+        <result column="DDate" property="date" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addOrder" parameterType="com.heitian.ssm.model.Order">
+        INSERT INTO table_order(OrderID, UserID, Amount, DDate) VALUES (#{oid},#{ouid},#{amount},#{date})
+    </insert>
+
+    <select id="selectAllOrder" resultMap="OrderBaseMap">
+        SELECT * FROM table_order
+    </select>
+
+</mapper>

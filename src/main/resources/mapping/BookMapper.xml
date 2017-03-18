@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.heitian.ssm.dao.BookDao">
+
+    <resultMap id="BookBaseMap" type="com.heitian.ssm.model.Book">
+        <id column="BookID" property="bid" jdbcType="BIGINT"/>
+        <result column="BookName" property="bName" jdbcType="VARCHAR"/>
+        <result column="Author" property="bAuthor" jdbcType="VARCHAR"/>
+        <result column="Category" property="bCategory" jdbcType="VARCHAR"/>
+        <result column="Price" property="bPrice" jdbcType="DOUBLE"/>
+        <result column="Quantity" property="bQuantity" jdbcType="BIGINT"/>
+        <result column="Discr" property="bDiscr" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectAllBook" resultMap="BookBaseMap">
+        SELECT * FROM book
+    </select>
+
+</mapper>
