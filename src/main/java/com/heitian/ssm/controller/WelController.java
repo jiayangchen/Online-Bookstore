@@ -8,6 +8,8 @@ import com.heitian.ssm.utils.DecriptUtil;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.mgt.SecurityManager;
@@ -49,7 +51,7 @@ public class WelController {
         //session.invalidate();
 
         //1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
-        Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
+        /*Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
         //2、得到SecurityManager实例 并绑定给SecurityUtils
         org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
@@ -74,7 +76,7 @@ public class WelController {
         } catch (AuthenticationException e) {
             //5、身份验证失败
             return "refuse";
-        }
+        }*/
 
         /*List<User> userList = userService.getAllUser();
         for(User u : userList){
@@ -90,7 +92,7 @@ public class WelController {
         model.addAttribute("username",username);
         return "refuse";*/
 
-        /*Subject currentUser = SecurityUtils.getSubject();
+        Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.isAuthenticated()){
             UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
             upToken.setRememberMe(false);
@@ -117,7 +119,7 @@ public class WelController {
                 return "refuse";
             }
         }
-        return "refuse";*/
+        return "refuse";
     }
 
     @RequestMapping("/logout")
@@ -197,13 +199,28 @@ public class WelController {
     }
 
     @RequestMapping("/perCenter")
-    public String perCenter(Model model){
+    public String perCenter(Model model) {
+        /*if (SecurityUtils.getSubject().hasRole("admin")) {
+            List<User> userList = userService.getAllUser();
+            for (User u : userList) {
+                String s = DecriptUtil.MD5(u.getuPassword());
+                u.setuPassword(s);
+            }
+            model.addAttribute("userList", userList);
+            return "admin/admin";
+        }return "refuse";*/
+
         List<User> userList = userService.getAllUser();
-        for (User u : userList){
+        for (User u : userList) {
             String s = DecriptUtil.MD5(u.getuPassword());
             u.setuPassword(s);
         }
         model.addAttribute("userList", userList);
         return "admin/admin";
+    }
+
+    @RequestMapping("/test")
+    public String test(){
+        return "admin/test";
     }
 }
