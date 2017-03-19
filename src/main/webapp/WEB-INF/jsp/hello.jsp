@@ -48,17 +48,21 @@
             </button>
             <c:if test="${! empty username}">
                 <a class="navbar-brand" href="#">Hello ${username}</a>
-
+            </c:if>
         </div>
+
             <div id="navbar" class="navbar-collapse collapse">
+                <shiro:hasRole name="user,manager">
                 <form class="navbar-form navbar-right" action="<c:url value="/viewCart"/>" method="post">
                     <button type="submit" class="btn btn-success">View Cart</button>
                 </form>
+                </shiro:hasRole>
                 <form class="navbar-form navbar-right" action="<c:url value="/logout"/>" method="post">
                     <button type="submit" class="btn btn-danger">Log out</button>
                 </form>
             </div>
-        </c:if>
+
+
     </div>
 </nav>
 
@@ -83,10 +87,30 @@
             <div class="col-md-4">
                 <h2>${book.bName}</h2>
                 <p>${book.bDiscr}</p>
-                <form action="<c:url value="/addCart"/>" method="post">
-                    <input type="hidden" value="${book.bid}" name="addtocartBtn">
-                    <button class="btn btn-default" >AddToCart &raquo;</button>
-                </form>
+                <c:if test="${role == 'user'}">
+                <div class="btn-group">
+                    <form action="<c:url value="/addCart"/>" method="post">
+                        <input type="hidden" value="${book.bid}" name="addtocartBtn">
+                        <button class="btn btn-default" >AddToCart &raquo;</button>
+                    </form>
+                    <form action="<c:url value="/viewInfo"/>" method="post">
+                        <input type="hidden" value="${book.bid}" name="addtocartBtn">
+                        <button class="btn btn-info" >View Info &raquo;</button>
+                    </form>
+                </div>
+                </c:if>
+                <c:if test="${role == 'admin'}">
+                    <form action="<c:url value="/viewInfo"/>" method="post">
+                        <input type="hidden" value="${book.bid}" name="addtocartBtn">
+                        <button class="btn btn-info" >View Info &raquo;</button>
+                    </form>
+                </c:if>
+                <c:if test="${role == 'manager'}">
+                    <form action="<c:url value="/viewInfo"/>" method="post">
+                        <input type="hidden" value="${book.bid}" name="addtocartBtn">
+                        <button class="btn btn-info" >View Info &raquo;</button>
+                    </form>
+                </c:if>
             </div>
         </c:forEach>
     </c:if>

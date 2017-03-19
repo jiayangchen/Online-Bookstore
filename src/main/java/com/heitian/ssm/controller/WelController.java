@@ -33,11 +33,11 @@ import java.util.*;
 public class WelController {
 
     private Logger log = Logger.getLogger(CartController.class);
-    @Resource
+    @Autowired
     private BookService bookService;
-    @Resource
+    @Autowired
     private UserService userService;
-    @Resource
+    @Autowired
     private OrderService orderService;
     @Autowired
     private Cart cart;
@@ -103,8 +103,34 @@ public class WelController {
                 model.addAttribute("username",username);
                 log.info("查询所有图书信息");
                 List<Book> bookList = bookService.getAllBook();
-                model.addAttribute("bookList",bookList);
-                return "hello";
+                /*model.addAttribute("bookList", bookList);
+                return "hello";*/
+
+                if(currentUser.hasRole("manager")) {
+                    session.setAttribute("role","manager");
+                    model.addAttribute("bookList", bookList);
+                    return "hello";
+                }else if(currentUser.hasRole("user")){
+                    session.setAttribute("role","user");
+                    List<Book>uBookList = new ArrayList<Book>();
+                    for(Book b : bookList){
+                        if(b.getbCategory().equals("IT") || b.getbCategory().equals("Fiction")){
+                            uBookList.add(b);
+                        }
+                    }
+                    model.addAttribute("bookList", uBookList);
+                    return "hello";
+                }else if(currentUser.hasRole("admin")){
+                    session.setAttribute("role","admin");
+                    List<Book>aBookList = new ArrayList<Book>();
+                    for(Book b : bookList){
+                        if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature")){
+                            aBookList.add(b);
+                        }
+                    }
+                    model.addAttribute("bookList", aBookList);
+                    return "hello";
+                }
             } catch (IncorrectCredentialsException ice) {
                 //System.out.println("Wrong Username Or Pwd");
                 model.addAttribute("WUP","Wrong Username Or Pwd");
@@ -130,6 +156,19 @@ public class WelController {
         cart.setContens(null);
         SecurityUtils.getSubject().logout();
         return "index2";
+    }
+
+    @RequestMapping("/viewInfo")
+    public String viewInfo(@RequestParam("addtocartBtn") Long bcid,
+                           Model model){
+        List<Book> bookList = bookService.getAllBook();
+        for(Book b : bookList){
+            if(b.getBid().equals(bcid)){
+                model.addAttribute("bookInfo",b.getbDiscr());
+                return "bookInfo";
+            }
+        }
+        return "refuse";
     }
 
     @RequestMapping("/addCart")
@@ -194,7 +233,7 @@ public class WelController {
     public String confirmpay(@RequestParam("paypwd") String paypwd,
                              Model model){
 
-        model.addAttribute("paypwd",paypwd);
+        model.addAttribute("paypwd",DecriptUtil.MD5(paypwd));
         return "succ";
     }
 

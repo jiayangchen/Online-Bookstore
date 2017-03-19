@@ -20,7 +20,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Refuse</title>
+    <title>Sticky Footer Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -47,18 +47,15 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Message:${WUP}
-            Message:${AL}
-            Message:${OTHER}</h1>
+        <h1>BookInfo</h1>
+        <p>${bookInfo}</p>
     </div>
-    <p class="lead">I'm so sorry that you are refused to visit this page!</p>
-
 </div>
-
 
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
+
 

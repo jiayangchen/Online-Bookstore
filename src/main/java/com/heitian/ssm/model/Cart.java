@@ -4,12 +4,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import javax.ejb.Stateful;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateful
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
-public class Cart {
+public class Cart implements Serializable{
 
     private Integer customerId;
     private List<Book> contens;

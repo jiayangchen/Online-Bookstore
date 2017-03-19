@@ -64,7 +64,12 @@
                 /index2.jsp = anon<!--
                 /admin/admin.jsp = roles[admin]
                 /perCenter = roles[admin]-->
-                /test = authc,roles[admin]
+                <!--/viewCart = authc,roles[user,manager]
+                /addCart = authc,roles[user,manager]
+                /cart = authc,roles[user,manager]
+                /pay = authc,roles[user,manager]
+                /confirmpay = authc,roles[user,manager]
+                /resetCart = authc,roles[user,manager]-->
                 /perCenter = authc,roles[admin]
                 /logout = logout
             </value>
@@ -75,7 +80,7 @@
     <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
         <!-- 配置认证策略，只要有一个Realm认证成功即可，并且返回所有认证成功信息 -->
         <property name="authenticationStrategy">
-            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
+            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"/>
         </property>
     </bean>
     <!-- shiro end -->
