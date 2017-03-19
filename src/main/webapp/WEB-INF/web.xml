@@ -6,35 +6,58 @@
          version="3.0">
 
     <display-name>web-ssm</display-name>
-    
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring-mybatis.xml</param-value>
-    </context-param>
+
+    <welcome-file-list>
+        <welcome-file>/index2.jsp</welcome-file>
+    </welcome-file-list>
 
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>classpath:log4j.properties</param-value>
     </context-param>
 
+    <!--在这里配置shiro的filter-->
+    <!-- shiro过虑器，DelegatingFilterProxy通过代理模式将spring容器中的bean和filter关联起来 -->
+    <!--<filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        &lt;!&ndash; 设置true由servlet容器控制filter的生命周期 &ndash;&gt;
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        &lt;!&ndash; 设置spring容器filter的bean id，如果不设置则找与filter-name一致的bean&ndash;&gt;
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>shiroFilter</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
+    <!-- spring security -->
+    <!--<filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
+
     <!-- 编码过滤器 -->
-    <filter>
+    <!--<filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
         </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- spring监听器 -->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    </filter>-->
 
     <!-- spring mvc servlet-->
     <servlet>
@@ -42,20 +65,31 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring-mvc.xml</param-value>
+            <param-value>classpath:spring-mvc.xml,classpath:spring-security.xml</param-value>
         </init-param>
+
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>SpringMVC</servlet-name>
         <!-- 此处也可以配置成 *.do 形式 -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <welcome-file-list>
-        <welcome-file>/index2.jsp</welcome-file>
-    </welcome-file-list>
+    <!-- spring监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-mybatis.xml,
+                     classpath:spring-mvc.xml,
+                     classpath:spring-security.xml
+        </param-value>
+    </context-param>
 
     <!-- session配置 -->
     <session-config>

@@ -77,7 +77,7 @@
                         </c:forEach>
                     </c:if>
 
-                    <c:if test="${empty cart}">
+                    <c:if test="${empty userList}">
                         Empty
                     </c:if>
                     </tbody>

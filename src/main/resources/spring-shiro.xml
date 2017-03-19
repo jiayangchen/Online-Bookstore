@@ -1,0 +1,46 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+
+
+    <!--web.xml中shiro的filter对应的bean-->
+    <!-- Shiro 的Web过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        <!-- loginUrl认证提交地址，如果没有认证将会请求此地址进行认证，请求此地址将由formAuthenticationFilter进行表单认证 -->
+        <property name="loginUrl" value="/welcome" />
+        <!--认证成功统一跳转到first.actio，建议不配置，不配置的话shiro认证成功会自动到上一个请求路径-->
+        <property name="successUrl" value="/hello"/>
+        <property name="unauthorizedUrl" value="/welcome" />
+        <!-- 过虑器链定义，从上向下顺序执行，一般将/**放在最下边 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /jsp/admin/** = authc
+                /jsp/** = authc
+                <!--/**=anon 表示所有的url都可以匿名访问，anon是shiro中一个过滤器的简写，关于shiro中的过滤器介绍见-->
+                /logout = logout
+            </value>
+        </property>
+    </bean>
+
+    <!--securityManage-->
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="customRealm" />
+    </bean>
+
+    <!--自定义realm-->
+    <bean id="customRealm" class="com.heitian.ssm.realm.CustomRealm">
+    </bean>
+</beans>

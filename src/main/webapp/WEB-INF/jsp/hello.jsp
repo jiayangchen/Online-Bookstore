@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -66,9 +67,11 @@
     <div class="container">
         <h1>BookStore</h1>
         <p>This is an online bookstore. You can buy whatever you like here. </p>
+        <shiro:hasRole name="admin">
         <form action="<c:url value="/perCenter"/>" method="post">
             <p><button type="submit" class="btn btn-primary btn-lg">Personal Center &raquo;</button></p>
         </form>
+        </shiro:hasRole>
     </div>
 </div>
 
