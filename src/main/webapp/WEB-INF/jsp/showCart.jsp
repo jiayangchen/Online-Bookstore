@@ -92,8 +92,9 @@
 
     <div id="navbar" class="navbar-collapse collapse">
 
-            <button class="btn btn-success">Pay</button>
-            <a class="btn btn-danger" href="<c:url value="/resetCart"/>">Reset Cart</a>
+        <button class="btn btn-success">Pay</button>
+        <a class="btn btn-danger" href="<c:url value="/resetCart"/>">Reset Cart</a>
+        <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
     </div>
     </form>
 </div>

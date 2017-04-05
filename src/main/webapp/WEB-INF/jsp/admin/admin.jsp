@@ -84,7 +84,7 @@
                 </table>
             </div>
         </div>
-    </form>
+    <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
 </div>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

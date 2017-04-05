@@ -50,6 +50,7 @@
         <h1>BookInfo</h1>
         <p>${bookInfo}</p>
     </div>
+    <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
 </div>
 
 

@@ -91,7 +91,7 @@
         <session-timeout>15</session-timeout>
     </session-config>
 
-    <security-constraint>
+    <!--<security-constraint>
     <web-resource-collection >
         <web-resource-name >SSL</web-resource-name>
         <url-pattern>/confirmpay</url-pattern>
@@ -99,6 +99,15 @@
     <user-data-constraint>
         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
+    </security-constraint>-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>securedapp</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
 
 </web-app>

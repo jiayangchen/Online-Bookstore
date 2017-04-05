@@ -52,17 +52,15 @@
         </div>
 
             <div id="navbar" class="navbar-collapse collapse">
-                <shiro:hasRole name="user,manager">
+                <shiro:hasAnyRoles name="user,manager">
                 <form class="navbar-form navbar-right" action="<c:url value="/viewCart"/>" method="post">
                     <button type="submit" class="btn btn-success">View Cart</button>
                 </form>
-                </shiro:hasRole>
+                </shiro:hasAnyRoles>
                 <form class="navbar-form navbar-right" action="<c:url value="/logout"/>" method="post">
                     <button type="submit" class="btn btn-danger">Log out</button>
                 </form>
             </div>
-
-
     </div>
 </nav>
 

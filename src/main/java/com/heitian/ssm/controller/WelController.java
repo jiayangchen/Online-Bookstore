@@ -262,4 +262,33 @@ public class WelController {
     public String test(){
         return "admin/test";
     }
+
+    @RequestMapping("/back")
+    public String back(Model model) {
+        List<Book> bookList = bookService.getAllBook();
+        if (SecurityUtils.getSubject().hasRole("user")) {
+            List<Book> uBookList = new ArrayList<Book>();
+            for (Book b : bookList) {
+                if (b.getbCategory().equals("IT") || b.getbCategory().equals("Fiction")) {
+                    uBookList.add(b);
+                }
+            }
+            model.addAttribute("bookList", uBookList);
+            return "hello";
+        } else if(SecurityUtils.getSubject().hasRole("admin")){
+            List<Book>aBookList = new ArrayList<Book>();
+            for(Book b : bookList){
+                if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature")){
+                    aBookList.add(b);
+                }
+            }
+            model.addAttribute("bookList", aBookList);
+            return "hello";
+        }
+
+        else{
+            model.addAttribute("bookList", bookList);
+            return "hello";
+        }
+    }
 }
