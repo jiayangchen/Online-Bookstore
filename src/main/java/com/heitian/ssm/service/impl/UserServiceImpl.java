@@ -18,10 +18,12 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
+    @CacheEvict(value = {"getAllUser"}, allEntries = true)
     public User getUserByName(String userName) {
         return userDao.selectUserByName(userName);
     }
 
+    @Cacheable("getAllUser")
     public List<User> getAllUser() {
         return userDao.selectAllUser();
     }
