@@ -2,10 +2,11 @@ package com.heitian.ssm.model;
 
 import javax.ejb.Singleton;
 import javax.ejb.Stateless;
+import java.io.Serializable;
 
 @Singleton
 @Stateless
-public class User {
+public class User implements Serializable{
 
     private Long uid;
     private String uName;

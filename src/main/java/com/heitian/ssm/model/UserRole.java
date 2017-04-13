@@ -1,9 +1,11 @@
 package com.heitian.ssm.model;
 
-public class UserRole {
+import java.io.Serializable;
 
-    Long RId;
-    Long UId;
+public class UserRole implements Serializable {
+
+    private Long RId;
+    private Long UId;
 
     public Long getRId() {
         return RId;

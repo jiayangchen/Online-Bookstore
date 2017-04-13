@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Order implements Serializable{
+
     private Long oid;
     private Long ouid;
     private Double amount;

@@ -1,6 +1,9 @@
 package com.heitian.ssm.model;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable{
+
     private Long bid;
     private String bName;
     private String bAuthor;

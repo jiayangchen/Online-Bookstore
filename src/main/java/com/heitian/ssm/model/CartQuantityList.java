@@ -3,10 +3,8 @@ package com.heitian.ssm.model;
 import java.io.Serializable;
 import java.util.Map;
 
-/**
- * Created by ChenJiayang on 2017/3/17.
- */
 public class CartQuantityList implements Serializable {
+
     private Map<Long, Integer> cartItem;
 
     public Map<Long, Integer> getCartItem() {
