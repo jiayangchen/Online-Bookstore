@@ -12,7 +12,8 @@
         <result column="Discr" property="bDiscr" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="selectAllBook" resultMap="BookBaseMap">
+    <select id="selectAllBook" parameterType="com.heitian.ssm.model.Book"
+            resultMap="BookBaseMap">
         SELECT * FROM book
     </select>
 

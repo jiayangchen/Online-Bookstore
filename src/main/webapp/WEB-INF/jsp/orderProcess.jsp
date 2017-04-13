@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: ChenJiayang
+  Date: 2017/4/13
+  Time: 15:15
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -12,7 +19,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin</title>
+    <title>Order Processing</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +28,7 @@
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link href="sticky-footer.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -35,32 +42,18 @@
 </head>
 
 <body>
-<%--<a href="<c:url value="/welcome"/>"><h1>Hello World</h1></a>--%>
 
+<!-- Begin page content -->
 <div class="container">
-
-    <form class="form-signin" action="<c:url value="/welcome"/>" method="post">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-
-    </form>
-    <form action="<c:url value="/logout"/>" method="post">
-        <button class="btn btn-lg btn-danger btn-block" type="submit">Reset</button>
-    </form>
-    <form action="<c:url value="/testJms"/>" method="post">
-        <button class="btn btn-lg btn-danger btn-block" type="submit">Jms</button>
-    </form>
-
-</div> <!-- /container -->
+    <div class="page-header">
+        <h1>Order Processing...</h1>
+    </div>
+    <p class="lead">Your order has been received!</p>
+    <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
+</div>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
-
-
 

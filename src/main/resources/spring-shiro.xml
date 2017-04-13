@@ -1,17 +1,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-		http://www.springframework.org/schema/mvc
-		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-3.2.xsd
-		http://www.springframework.org/schema/aop
-		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
-		http://www.springframework.org/schema/tx
-		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="authenticator" ref="authenticator"/>
@@ -23,19 +13,7 @@
         </property>
     </bean>
 
-
-    <bean id="userRealm" class="com.heitian.ssm.realm.UserRealm">
-
-       <!-- &lt;!&ndash; 配置密码匹配器 &ndash;&gt;
-        <property name="credentialsMatcher">
-            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                &lt;!&ndash; 加密算法为MD5 &ndash;&gt;
-                <property name="hashAlgorithmName" value="MD5"></property>
-                &lt;!&ndash; 加密次数 &ndash;&gt;
-                <property name="hashIterations" value="1024"></property>
-            </bean>
-        </property>-->
-    </bean>
+    <bean id="userRealm" class="com.heitian.ssm.realm.UserRealm"/>
 
     <!-- 4. 配置LifecycleBeanPostProcessor，可以自定义地来调用配置在Spring IOC容器中shiro bean的生命周期方法 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
@@ -61,15 +39,13 @@
         <property name="filterChainDefinitions">
             <value>
                 <!-- 第一次匹配优先的原则 -->
-                /index2.jsp = anon<!--
-                /admin/admin.jsp = roles[admin]
-                /perCenter = roles[admin]-->
-                <!--/viewCart = authc,roles[user,manager]
-                /addCart = authc,roles[user,manager]
+                /index2.jsp = anon
+                /welcome = anon
+                /hello = authc
+                /viewInfo = authc
                 /cart = authc,roles[user,manager]
-                /pay = authc,roles[user,manager]
-                /confirmpay = authc,roles[user,manager]
-                /resetCart = authc,roles[user,manager]-->
+                /addCart = authc,roles[user]
+                /viewCart = authc,roles[user]
                 /perCenter = authc,roles[admin]
                 /logout = logout
             </value>

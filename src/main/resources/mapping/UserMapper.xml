@@ -6,6 +6,7 @@
         <id column="id" property="uid" jdbcType="BIGINT"/>
         <result column="username" property="uName" jdbcType="VARCHAR"/>
         <result column="password" property="uPassword" jdbcType="VARCHAR"/>
+        <result column="roleId" property="rid" jdbcType="BIGINT"/>
     </resultMap>
 
     <select id="selectUserByName" parameterType="java.lang.String" resultMap="UserBaseMap">
@@ -13,7 +14,8 @@
         WHERE username = #{userName}
     </select>
 
-    <select id="selectAllUser" resultMap="UserBaseMap">
+    <select id="selectAllUser" parameterType="com.heitian.ssm.model.User"
+            resultMap="UserBaseMap">
         SELECT * FROM table_user
     </select>
 </mapper>

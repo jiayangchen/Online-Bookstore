@@ -1,8 +1,10 @@
 package com.heitian.ssm.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.heitian.ssm.model.*;
 import com.heitian.ssm.service.BookService;
 import com.heitian.ssm.service.OrderService;
+import com.heitian.ssm.service.ProductService;
 import com.heitian.ssm.service.UserService;
 import com.heitian.ssm.utils.DecriptUtil;
 import org.apache.log4j.Logger;
@@ -11,23 +13,21 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.config.IniSecurityManagerFactory;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.Factory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import javax.jms.Destination;
 
 @Controller
 public class WelController {
@@ -41,6 +41,11 @@ public class WelController {
     private OrderService orderService;
     @Autowired
     private Cart cart;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    @Qualifier("queueDestination")
+    private Destination destination;
 
     @RequestMapping("/welcome")
     public String welCome(@RequestParam("username") String username,
@@ -48,53 +53,10 @@ public class WelController {
                           HttpServletRequest request,
                           HttpSession session,
                           Model model){
-        //session.invalidate();
-
-        //1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
-        /*Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
-        //2、得到SecurityManager实例 并绑定给SecurityUtils
-        org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
-        SecurityUtils.setSecurityManager(securityManager);
-        //3、得到Subject及创建用户名/密码身份验证Token（即用户身份/凭证）
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-
-        try {
-            //4、登录，即身份验证
-            subject.login(token);
-            model.addAttribute("username",username);
-            session.setAttribute("sess_username",username);
-            log.info("查询所有图书信息");
-            List<Book> bookList = bookService.getAllBook();
-            model.addAttribute("bookList",bookList);
-
-            if(subject.hasRole("admin")){
-                return "hello";
-            }
-            return "hello";
-
-        } catch (AuthenticationException e) {
-            //5、身份验证失败
-            return "refuse";
-        }*/
-
-        /*List<User> userList = userService.getAllUser();
-        for(User u : userList){
-            if(u.getuName().equals(username) && u.getuPassword().equals(password)){
-                model.addAttribute("username",username);
-                session.setAttribute("sess_username",username);
-                log.info("查询所有图书信息");
-                List<Book> bookList = bookService.getAllBook();
-                model.addAttribute("bookList",bookList);
-                return "hello";
-            }
-        }
-        model.addAttribute("username",username);
-        return "refuse";*/
 
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.isAuthenticated()){
-            UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
+            UsernamePasswordToken upToken = new UsernamePasswordToken(username, DecriptUtil.MD5(password));
             upToken.setRememberMe(false);
             try {
                 currentUser.login(upToken);
@@ -159,16 +121,15 @@ public class WelController {
     }
 
     @RequestMapping("/viewInfo")
-    public String viewInfo(@RequestParam("addtocartBtn") Long bcid,
-                           Model model){
+    @ResponseBody
+    public String viewInfo(@RequestParam("addtocartBtn") Long bcid){
         List<Book> bookList = bookService.getAllBook();
         for(Book b : bookList){
             if(b.getBid().equals(bcid)){
-                model.addAttribute("bookInfo",b.getbDiscr());
-                return "bookInfo";
+                return b.getbDiscr();
             }
         }
-        return "refuse";
+        return null;
     }
 
     @RequestMapping("/addCart")
@@ -211,16 +172,16 @@ public class WelController {
 
         String username = (String) session.getAttribute("sess_username");
         User user = userService.getUserByName(username);
-        Order order = new Order();
-        order.setOuid(user.getUid());
-        order.setAmount(totalAmount);
-
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateNowStr = sdf.format(d);
-        order.setDate(dateNowStr);
-        orderService.addOrder(order);
-        return "success";
+        JSONObject orderJSON = new JSONObject();
+        orderJSON.put("ouid",user.getUid());
+        orderJSON.put("totalAmount",totalAmount);
+        orderJSON.put("date",dateNowStr);
+        productService.sendMessage(destination, orderJSON.toString());
+        System.out.println("--------------- producer has sent order -----------------");
+        return "orderProcess";
     }
 
     @RequestMapping("/resetCart")
@@ -234,26 +195,12 @@ public class WelController {
                              Model model){
 
         model.addAttribute("paypwd",DecriptUtil.MD5(paypwd));
-        return "succ";
+        return "orderProcess";
     }
 
     @RequestMapping("/perCenter")
     public String perCenter(Model model) {
-        /*if (SecurityUtils.getSubject().hasRole("admin")) {
-            List<User> userList = userService.getAllUser();
-            for (User u : userList) {
-                String s = DecriptUtil.MD5(u.getuPassword());
-                u.setuPassword(s);
-            }
-            model.addAttribute("userList", userList);
-            return "admin/admin";
-        }return "refuse";*/
-
         List<User> userList = userService.getAllUser();
-        for (User u : userList) {
-            String s = DecriptUtil.MD5(u.getuPassword());
-            u.setuPassword(s);
-        }
         model.addAttribute("userList", userList);
         return "admin/admin";
     }
@@ -290,5 +237,13 @@ public class WelController {
             model.addAttribute("bookList", bookList);
             return "hello";
         }
+    }
+
+    @RequestMapping("/testJms")
+    public String testJms(){
+        for (int i=0; i<2; i++) {
+            productService.sendMessage(destination, "Hello,Producer!This is message:" + (i+1));
+        }
+        return "OrderProcess";
     }
 }
