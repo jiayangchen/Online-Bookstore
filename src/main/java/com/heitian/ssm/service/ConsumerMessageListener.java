@@ -14,6 +14,7 @@ public class ConsumerMessageListener implements MessageListener {
 
         TextMessage textMsg = (TextMessage) message;
         System.out.println("receive a order");
+
         try {
 
             String orderStr = textMsg.getText();

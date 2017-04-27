@@ -132,6 +132,18 @@ public class WelController {
         return null;
     }
 
+    @RequestMapping("/api/viewInfo")
+    @ResponseBody
+    public String viewInfoAjax(@RequestParam("addtocartBtn") Long bcid){
+        List<Book> bookList = bookService.getAllBook();
+        for(Book b : bookList){
+            if(b.getBid().equals(bcid)){
+                return b.getbDiscr();
+            }
+        }
+        return null;
+    }
+
     @RequestMapping("/addCart")
     public String addCart(@RequestParam("addtocartBtn") Long bcid) {
         if (bcid == null || bcid <= 0) {
@@ -245,5 +257,15 @@ public class WelController {
             productService.sendMessage(destination, "Hello,Producer!This is message:" + (i+1));
         }
         return "OrderProcess";
+    }
+
+    @RequestMapping("/chatroom")
+    public String chatroom(){
+        return "chatroom";
+    }
+
+    @RequestMapping("/chat")
+    public String chat(){
+        return "chat";
     }
 }

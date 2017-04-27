@@ -51,9 +51,9 @@
     <form action="<c:url value="/logout"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit">Reset</button>
     </form>
-    <form action="<c:url value="/testJms"/>" method="post">
+    <%--<form action="<c:url value="/testJms"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit">Jms</button>
-    </form>
+    </form>--%>
 
 </div> <!-- /container -->
 

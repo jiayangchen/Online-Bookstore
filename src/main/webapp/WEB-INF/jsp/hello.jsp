@@ -33,6 +33,19 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+        img.book-img {
+            display: block;
+            float: left;
+
+            margin-right: 5px;
+            margin-bottom: 2px;
+
+            width: auto;
+            height: 140px;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,6 +73,9 @@
                 <form class="navbar-form navbar-right" action="<c:url value="/logout"/>" method="post">
                     <button type="submit" class="btn btn-danger">Log out</button>
                 </form>
+                <form class="navbar-form navbar-right" action="<c:url value="/chat"/>" method="post">
+                    <button type="submit" class="btn btn-info">ChatRoom</button>
+                </form>
             </div>
     </div>
 </nav>
@@ -81,34 +97,40 @@
     <!-- Example row of columns -->
     <div class="row">
     <c:if test="${!empty bookList}">
-        <c:forEach var="book" items="${bookList}">
+        <c:forEach var="book" items="${bookList}" varStatus="status">
+            <c:if test="${status.index % 3 == 0}">
+                </div>
+                <div class="row">
+            </c:if>
             <div class="col-md-4">
                 <h2>${book.bName}</h2>
+                
+                <img class="img-rounded book-img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492103679458&di=ca37e6033960b495824dfbf9766097ae&imgtype=0&src=http%3A%2F%2Fimg1.cache.netease.com%2Fcatchpic%2F3%2F30%2F3011E7D99CAAB360392CF4470D32E906.jpg">
                 <p>${book.bDiscr}</p>
+
+
+                <div>
+
                 <c:if test="${role == 'user'}">
-                <div class="btn-group">
-                    <form action="<c:url value="/addCart"/>" method="post">
+
+                    <form style="display:inline-block;" action="<c:url value="/addCart"/>" method="post">
                         <input type="hidden" value="${book.bid}" name="addtocartBtn">
                         <button class="btn btn-default" >AddToCart &raquo;</button>
                     </form>
-                    <form action="<c:url value="/viewInfo"/>" method="post">
-                        <input id="viewInfo" type="hidden" value="${book.bid}" name="addtocartBtn">
-                        <button class="btn btn-info" >View Info &raquo;</button>
-                    </form>
-                </div>
+                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}">View Info &raquo;</button>
+
                 </c:if>
                 <c:if test="${role == 'admin'}">
-                    <form action="<c:url value="/viewInfo"/>" method="post">
-                        <input type="hidden" value="${book.bid}" name="addtocartBtn">
-                        <button class="btn btn-info" >View Info &raquo;</button>
-                    </form>
+                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}">View Info &raquo;</button>
                 </c:if>
                 <c:if test="${role == 'manager'}">
-                    <form action="<c:url value="/viewInfo"/>" method="post">
-                        <input type="hidden" value="${book.bid}" name="addtocartBtn">
-                        <button class="btn btn-info" >View Info &raquo;</button>
-                    </form>
+                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}">View Info &raquo;</button>
                 </c:if>
+
+
+                </div>
+
+                <div class="clearfix"></div>
             </div>
         </c:forEach>
     </c:if>
@@ -119,7 +141,24 @@
     </footer>
 </div> <!-- /container -->
 
-<span id="msg" style="color:#4a80ff;"/>
+<span id="msg" style="color:#4a80ff;"></span>
+
+<div class="modal fade" id="bookInfoModal" tabindex="-1" role="dialog" aria-labelledby="bookInfoModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Book Info</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -135,10 +174,14 @@
 
     //jQuery-ajax
 
-    $('#viewInfo').click(function () {
+    $('.btn-book-view').click(function () {
+        var btn = $(this);
+        var bookId = parseInt(btn.data('bid'));
+
         var url = "<c:url value="/viewInfo"/>";
-        $.post(url, { addtocartBtn: 1}, function (data) {
-            alert(data);
+        $.post(url, { addtocartBtn: bookId}, function (data) {
+            $('#bookInfoModal .modal-body').text(JSON.parse(data));
+            $('#bookInfoModal').modal('show');
         });
     })
 
