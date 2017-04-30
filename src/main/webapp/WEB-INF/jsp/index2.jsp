@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,6 +13,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
+    <spring:message code="userinfo"/>：
     <title>Signin</title>
 
     <!-- Bootstrap core CSS -->
@@ -51,6 +53,7 @@
     <form action="<c:url value="/logout"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit">Reset</button>
     </form>
+
     <%--<form action="<c:url value="/testJms"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit">Jms</button>
     </form>--%>

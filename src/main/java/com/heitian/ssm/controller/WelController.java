@@ -7,6 +7,7 @@ import com.heitian.ssm.service.OrderService;
 import com.heitian.ssm.service.ProductService;
 import com.heitian.ssm.service.UserService;
 import com.heitian.ssm.utils.DecriptUtil;
+import com.heitian.ssm.utils.LogInterceptor;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -15,6 +16,9 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -47,12 +52,25 @@ public class WelController {
     @Qualifier("queueDestination")
     private Destination destination;
 
+    private Logger logger = Logger.getLogger(WelController.class);
+
+
     @RequestMapping("/welcome")
     public String welCome(@RequestParam("username") String username,
                           @RequestParam("password") String password,
                           HttpServletRequest request,
                           HttpSession session,
                           Model model){
+
+        logger.info("login ....");
+        //测试国际化
+        /*ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-message.xml");
+        Object[] arg = new Object[] { "张三",  Calendar.getInstance().getTime() };
+        String s = ctx.getMessage("userinfo", arg, Locale.US);
+        String s2 = ctx.getMessage("userinfo", arg, Locale.CHINA);
+        System.out.println("Message is ===> "  + s);
+        System.out.println("Message is ===> "  + s2);*/
+
 
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.isAuthenticated()){
@@ -252,7 +270,7 @@ public class WelController {
     }
 
     @RequestMapping("/testJms")
-    public String testJms(){
+    public String testJms() {
         for (int i=0; i<2; i++) {
             productService.sendMessage(destination, "Hello,Producer!This is message:" + (i+1));
         }
@@ -268,4 +286,5 @@ public class WelController {
     public String chat(){
         return "chat";
     }
+
 }

@@ -51,7 +51,6 @@ public class RedisCache implements Cache {
         this.id = id;
     }
 
-
     public String getId() {
         return this.id;
     }
@@ -65,23 +64,19 @@ public class RedisCache implements Cache {
         RedisUtil.getJedis().set(SerializeUtil.serialize(key.toString()), SerializeUtil.serialize(value));
     }
 
-
     public Object getObject(Object key) {
         Object value = SerializeUtil.unserialize(RedisUtil.getJedis().get(SerializeUtil.serialize(key.toString())));
         logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>getObject:"+key+"="+value);
         return value;
     }
 
-
     public Object removeObject(Object key) {
         return RedisUtil.getJedis().expire(SerializeUtil.serialize(key.toString()),0);
     }
 
-
     public void clear() {
         RedisUtil.getJedis().flushDB();
     }
-
 
     public ReadWriteLock getReadWriteLock() {
         return readWriteLock;

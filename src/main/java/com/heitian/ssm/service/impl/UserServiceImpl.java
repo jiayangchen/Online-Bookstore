@@ -6,6 +6,7 @@ import com.heitian.ssm.service.UserService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -19,11 +20,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @CacheEvict(value = {"getAllUser"}, allEntries = true)
+    @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public User getUserByName(String userName) {
         return userDao.selectUserByName(userName);
     }
 
     @Cacheable("getAllUser")
+    @Transactional(propagation=Propagation.REQUIRED,rollbackForClassName="Exception")
     public List<User> getAllUser() {
         return userDao.selectAllUser();
     }
