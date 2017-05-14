@@ -10,7 +10,7 @@
     <title>Insert title here</title>
 </head>
 <body>
-<a href="test?langType=zh">中文</a> | <a href="test?langType=en">英文</a><br/>
+<a href="global?langType=zh">中文</a> | <a href="global?langType=en">英文</a><br/>
 
 下面展示的是后台获取的国际化信息：<br/>
 ${money}<br/>

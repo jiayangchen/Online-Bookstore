@@ -13,7 +13,6 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <spring:message code="userinfo"/>：
     <title>Signin</title>
 
     <!-- Bootstrap core CSS -->

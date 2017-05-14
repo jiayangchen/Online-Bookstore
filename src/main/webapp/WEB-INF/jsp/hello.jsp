@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -60,21 +62,41 @@
                 <span class="icon-bar"></span>
             </button>
             <c:if test="${! empty username}">
-                <a class="navbar-brand" href="#">Hello ${username}</a>
+                <a class="navbar-brand" href="#"><spring:message code="greet"/> ${username}</a>
             </c:if>
         </div>
 
             <div id="navbar" class="navbar-collapse collapse">
-                <shiro:hasAnyRoles name="user,manager">
+                <c:if test="${role == 'user'}">
                 <form class="navbar-form navbar-right" action="<c:url value="/viewCart"/>" method="post">
-                    <button type="submit" class="btn btn-success">View Cart</button>
+                    <button type="submit" class="btn btn-success"><spring:message code="viewcart"/></button>
                 </form>
-                </shiro:hasAnyRoles>
+                </c:if>
                 <form class="navbar-form navbar-right" action="<c:url value="/logout"/>" method="post">
-                    <button type="submit" class="btn btn-danger">Log out</button>
+                    <button type="submit" class="btn btn-danger"><spring:message code="logout"/></button>
                 </form>
                 <form class="navbar-form navbar-right" action="<c:url value="/chat"/>" method="post">
-                    <button type="submit" class="btn btn-info">ChatRoom</button>
+                    <button type="submit" class="btn btn-info"><spring:message code="chatroom"/></button>
+                </form>
+                <form class="navbar-form navbar-right">
+                    <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        语言(Language) <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="welcome?langType=zh">中文</a></li>
+                        <li><a href="welcome?langType=en">English</a></li>
+                    </ul>
+                    </div>
+                </form>
+                <form class="navbar-form navbar-right" action="<c:url value="/sBook"/>" method="post">
+                    <div class="input-group">
+                            <div class="input-group">
+                                <input name="sBookName" placeholder="<spring:message code="searchHint"/>" type="text" class="form-control">
+                                <%--<span class="input-group-addon btn btn-primary"><spring:message code="search"/></span>--%>
+                                <button class="btn btn-sm btn-primary btn-block" type="submit"><spring:message code="search"/></button>
+                            </div>
+                    </div>
                 </form>
             </div>
     </div>
@@ -83,13 +105,14 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <h1>BookStore</h1>
-        <p>This is an online bookstore. You can buy whatever you like here. </p>
-        <shiro:hasRole name="admin">
+        <h1><spring:message code="bookstore"/></h1>
+        <p><spring:message code="storeinfo"/></p>
+
+        <c:if test="${role == 'admin'}">
         <form action="<c:url value="/perCenter"/>" method="post">
-            <p><button type="submit" class="btn btn-primary btn-lg">Personal Center &raquo;</button></p>
+            <p><button type="submit" class="btn btn-primary btn-lg"><spring:message code="percenter"/> &raquo;</button></p>
         </form>
-        </shiro:hasRole>
+        </c:if>
     </div>
 </div>
 
@@ -108,28 +131,24 @@
                 <img class="img-rounded book-img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492103679458&di=ca37e6033960b495824dfbf9766097ae&imgtype=0&src=http%3A%2F%2Fimg1.cache.netease.com%2Fcatchpic%2F3%2F30%2F3011E7D99CAAB360392CF4470D32E906.jpg">
                 <p>${book.bDiscr}</p>
 
-
                 <div>
 
                 <c:if test="${role == 'user'}">
 
                     <form style="display:inline-block;" action="<c:url value="/addCart"/>" method="post">
                         <input type="hidden" value="${book.bid}" name="addtocartBtn">
-                        <button class="btn btn-default" >AddToCart &raquo;</button>
+                        <button class="btn btn-default" ><spring:message code="addCart"/> &raquo;</button>
                     </form>
-                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}">View Info &raquo;</button>
+                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}"><spring:message code="viewInfo"/> &raquo;</button>
 
                 </c:if>
                 <c:if test="${role == 'admin'}">
-                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}">View Info &raquo;</button>
+                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}"><spring:message code="viewInfo"/> &raquo;</button>
                 </c:if>
                 <c:if test="${role == 'manager'}">
-                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}">View Info &raquo;</button>
+                    <button class="btn btn-info btn-book-view" data-bid="${book.bid}"><spring:message code="viewInfo"/> &raquo;</button>
                 </c:if>
-
-
                 </div>
-
                 <div class="clearfix"></div>
             </div>
         </c:forEach>

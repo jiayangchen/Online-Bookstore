@@ -191,6 +191,23 @@
       <version>${slf4j.version}</version>
     </dependency>
 
+    <!--SOAP-->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-core</artifactId>
+      <version>3.1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>3.1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <version>3.1.7</version>
+    </dependency>
+
     <!-- log end -->
     <!-- 映入JSON -->
     <dependency>

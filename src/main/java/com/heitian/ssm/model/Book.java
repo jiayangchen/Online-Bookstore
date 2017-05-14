@@ -1,5 +1,6 @@
 package com.heitian.ssm.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 public class Book implements Serializable{

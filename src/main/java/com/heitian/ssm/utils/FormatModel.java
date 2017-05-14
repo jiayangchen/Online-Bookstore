@@ -12,6 +12,16 @@ public class FormatModel{
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date date;
 
+    private String greeting;
+
+    public String getGreeting() {
+        return greeting;
+    }
+
+    public void setGreeting(String greeting) {
+        this.greeting = greeting;
+    }
+
     public double getMoney(){
         return money;
     }

@@ -1,9 +1,14 @@
 package com.heitian.ssm.model;
 
+import com.heitian.ssm.utils.WsConstants;
+
 import javax.ejb.Singleton;
 import javax.ejb.Stateless;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
+@XmlRootElement
 @Singleton
 @Stateless
 public class User implements Serializable{

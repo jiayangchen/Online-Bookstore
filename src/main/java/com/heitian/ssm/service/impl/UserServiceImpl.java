@@ -19,13 +19,11 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
-    @CacheEvict(value = {"getAllUser"}, allEntries = true)
     @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public User getUserByName(String userName) {
         return userDao.selectUserByName(userName);
     }
 
-    @Cacheable("getAllUser")
     @Transactional(propagation=Propagation.REQUIRED,rollbackForClassName="Exception")
     public List<User> getAllUser() {
         return userDao.selectAllUser();

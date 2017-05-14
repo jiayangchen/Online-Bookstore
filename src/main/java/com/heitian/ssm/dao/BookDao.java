@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface BookDao {
     List<Book> selectAllBook();
+    List<Book> selectAllBookCN();
 }

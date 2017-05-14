@@ -20,4 +20,9 @@ public class BookServiceImpl implements BookService{
     public List<Book> getAllBook() {
         return bookDao.selectAllBook();
     }
+
+    @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
+    public List<Book> getAllBookCN() {
+        return bookDao.selectAllBookCN();
+    }
 }

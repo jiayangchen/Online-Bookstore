@@ -17,4 +17,9 @@
         SELECT * FROM book
     </select>
 
+    <select id="selectAllBookCN" parameterType="com.heitian.ssm.model.Book"
+            resultMap="BookBaseMap">
+        SELECT * FROM bookCN
+    </select>
+
 </mapper>
