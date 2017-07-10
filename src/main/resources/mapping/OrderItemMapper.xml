@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.heitian.ssm.dao.OrderItemDao">
+
+    <resultMap id="OrderItemBaseMap" type="com.heitian.ssm.model.OrderItem">
+        <id column="ot_id" property="ot_id" jdbcType="BIGINT"/>
+        <result column="o_code" property="o_code" jdbcType="VARCHAR"/>
+        <result column="ot_bid" property="ot_bid" jdbcType="BIGINT"/>
+        <result column="ot_quantity" property="ot_quantity" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <insert id="addOrderItem" parameterType="com.heitian.ssm.model.OrderItem">
+        INSERT INTO t_order_item (ot_id, o_code, ot_bid, ot_quantity)
+        VALUES
+        (#{ot_id},#{o_code},#{ot_bid},#{ot_quantity})
+    </insert>
+
+</mapper>

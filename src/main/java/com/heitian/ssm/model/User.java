@@ -17,6 +17,9 @@ public class User implements Serializable{
     private String uName;
     private String uPassword;
     private Long rid;
+    private int sex;
+    private String address;
+    private Long phone;
 
     public Long getUid() {
         return uid;
@@ -48,5 +51,29 @@ public class User implements Serializable{
 
     public void setRid(Long rid) {
         this.rid = rid;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Long phone) {
+        this.phone = phone;
     }
 }

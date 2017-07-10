@@ -12,6 +12,7 @@ public class Book implements Serializable{
     private int bQuantity;
     private String bCategory;
     private String bDiscr;
+    private String bCover;
 
     public Long getBid() {
         return bid;
@@ -67,5 +68,13 @@ public class Book implements Serializable{
 
     public void setbCategory(String bCategory) {
         this.bCategory = bCategory;
+    }
+
+    public String getbCover() {
+        return bCover;
+    }
+
+    public void setbCover(String bCover) {
+        this.bCover = bCover;
     }
 }

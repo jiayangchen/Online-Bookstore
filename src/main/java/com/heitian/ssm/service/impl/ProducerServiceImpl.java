@@ -37,12 +37,4 @@ public class ProducerServiceImpl implements ProductService{
         this.jmsTemplate = jmsTemplate;
     }
 
-    /*public JmsTemplate getJmsTemplate() {
-        return jmsTemplate;
-    }
-
-    @Resource
-    public void setJmsTemplate(JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
-    }*/
 }

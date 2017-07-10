@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserDao {
     User selectUserByName(@Param("userName") String userName);
     List<User> selectAllUser();
+    void updateUser(int sex, String address, Long phone, String name);
 }

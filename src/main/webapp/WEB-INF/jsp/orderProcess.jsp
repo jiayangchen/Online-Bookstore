@@ -40,16 +40,51 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
 
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Order Processing...</h1>
+        <h1>Order Details <small>Please confirm the order information</small></h1>
     </div>
-    <p class="lead">Your order has been received!</p>
-    <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
+    <p class="lead">Order Code：${orderCode}</p>
+    <p class="lead">Name：${ordername} Address: ${orderaddress}</p>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>BookName</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:if test="${!empty orderlist}">
+                    <c:forEach var="book" items="${orderlist}">
+                        <tr>
+                            <td>${book.bName}</td>
+                            <td>${book.bPrice}</td>
+                            <td>${book.bQuantity}</td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
+
+                <c:if test="${empty orderlist}">
+                    Empty
+                </c:if>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br><br><br>
+    <nav style="text-align: right">
+    <a class="btn btn-primary" href="<c:url value="/updateOrderStatus"/>">Pay For it</a>
+    <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+    </nav>
 </div>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

@@ -45,11 +45,14 @@
 
 <!-- Begin page content -->
 <div class="container">
+
     <div class="page-header">
         <h1><%
             HttpSession s = request.getSession();
         %><%=s.getAttribute("sess_username")%>'s Shopping Cart</h1>
     </div>
+
+
 
     <form action="<c:url value="/pay"/>" method="post">
 
@@ -89,13 +92,14 @@
             </table>
         </div>
     </div>
-
-    <div id="navbar" class="navbar-collapse collapse">
-
-        <button class="btn btn-success">Pay</button>
-        <a class="btn btn-danger" href="<c:url value="/resetCart"/>">Reset Cart</a>
-        <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
-    </div>
+        <br><br><br>
+        <nav style="text-align: right">
+        <div id="navbar" class="navbar-collapse collapse">
+            <button class="btn btn-success">Submit Order</button>
+            <a class="btn btn-danger" href="<c:url value="/resetCart"/>">Reset Cart</a>
+            <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+        </div>
+        </nav>
     </form>
 </div>
 

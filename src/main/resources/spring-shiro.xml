@@ -1,7 +1,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="authenticator" ref="authenticator"/>
@@ -13,7 +13,9 @@
         </property>
     </bean>
 
-    <bean id="userRealm" class="com.heitian.ssm.realm.UserRealm"/>
+    <bean id="userRealm" class="com.heitian.ssm.realm.UserRealm">
+        <property name="authorizationCachingEnabled" value="false"/>
+    </bean>
 
     <!-- 4. 配置LifecycleBeanPostProcessor，可以自定义地来调用配置在Spring IOC容器中shiro bean的生命周期方法 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
@@ -35,6 +37,7 @@
         <property name="loginUrl" value="/index2.jsp" />
         <property name="successUrl" value="/hello.jsp" />
         <property name="unauthorizedUrl" value="/refuse.jsp" />
+
         <!-- 配置哪些页面需要受保护，以及访问这些页面需要的权限 -->
         <property name="filterChainDefinitions">
             <value>

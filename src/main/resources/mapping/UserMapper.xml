@@ -7,6 +7,9 @@
         <result column="username" property="uName" jdbcType="VARCHAR"/>
         <result column="password" property="uPassword" jdbcType="VARCHAR"/>
         <result column="roleId" property="rid" jdbcType="BIGINT"/>
+        <result column="sex" property="sex" jdbcType="BIGINT"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="BIGINT"/>
     </resultMap>
 
     <select id="selectUserByName" parameterType="java.lang.String" resultMap="UserBaseMap">
@@ -18,4 +21,10 @@
             resultMap="UserBaseMap">
         SELECT * FROM table_user
     </select>
+
+    <update id="updateUser" parameterType="com.heitian.ssm.model.User">
+        UPDATE table_user
+        SET sex = #{0}, address = #{1}, phone = #{2}
+        WHERE username = #{3}
+    </update>
 </mapper>

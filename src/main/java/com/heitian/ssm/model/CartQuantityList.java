@@ -19,7 +19,6 @@ public class CartQuantityList implements Serializable {
         if (cartItem == null || !cartItem.containsKey(bId)) {
             return defaultVal;
         }
-
         return cartItem.get(bId);
     }
 }

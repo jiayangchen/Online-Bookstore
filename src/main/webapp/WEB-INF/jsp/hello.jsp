@@ -15,7 +15,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Jumbotron Template for Bootstrap</title>
+    <title>书店首页</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -62,49 +62,57 @@
                 <span class="icon-bar"></span>
             </button>
             <c:if test="${! empty username}">
-                <a class="navbar-brand" href="#"><spring:message code="greet"/> ${username}</a>
+                <a class="navbar-brand" href="#">Hello ${username}</a>
             </c:if>
         </div>
-
             <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right" action="<c:url value="/logout"/>" method="post">
+                    <button type="submit" class="btn btn-danger"><spring:message code="logout"/></button>
+                </form>
                 <c:if test="${role == 'user'}">
                 <form class="navbar-form navbar-right" action="<c:url value="/viewCart"/>" method="post">
                     <button type="submit" class="btn btn-success"><spring:message code="viewcart"/></button>
                 </form>
                 </c:if>
-                <form class="navbar-form navbar-right" action="<c:url value="/logout"/>" method="post">
-                    <button type="submit" class="btn btn-danger"><spring:message code="logout"/></button>
+                <c:if test="${role == 'user'}">
+                    <form class="navbar-form navbar-right" action="<c:url value="/userCenter"/>" method="post">
+                        <button type="submit" class="btn btn-info"><spring:message code="userCenter"/></button>
+                    </form>
+                </c:if>
+                <form class="navbar-form navbar-right" action="<c:url value="/luceneSearch"/>" method="post">
+                    <div class="form-group">
+                        <input name="target" type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default"><spring:message code="search"/></button>
                 </form>
-                <form class="navbar-form navbar-right" action="<c:url value="/chat"/>" method="post">
-                    <button type="submit" class="btn btn-info"><spring:message code="chatroom"/></button>
-                </form>
+
                 <form class="navbar-form navbar-right">
-                    <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        语言(Language) <span class="caret"></span>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default"><spring:message code="category"/></button>
+                    <button type="button" class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">切换下拉菜单</span>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="welcome?langType=zh">中文</a></li>
-                        <li><a href="welcome?langType=en">English</a></li>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#"><spring:message code="literature"/></a></li>
+                        <li><a href="#"><spring:message code="science"/></a></li>
+                        <li><a href="#"><spring:message code="novel"/></a></li>
+                        <li><a href="#"><spring:message code="fiction"/></a></li>
+                        <li><a href="#"><spring:message code="IT"/></a></li>
+                        <li><a href="#"><spring:message code="biography"/></a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><spring:message code="all"/></a></li>
                     </ul>
-                    </div>
-                </form>
-                <form class="navbar-form navbar-right" action="<c:url value="/sBook"/>" method="post">
-                    <div class="input-group">
-                            <div class="input-group">
-                                <input name="sBookName" placeholder="<spring:message code="searchHint"/>" type="text" class="form-control">
-                                <%--<span class="input-group-addon btn btn-primary"><spring:message code="search"/></span>--%>
-                                <button class="btn btn-sm btn-primary btn-block" type="submit"><spring:message code="search"/></button>
-                            </div>
-                    </div>
+                </div>
                 </form>
             </div>
     </div>
 </nav>
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-    <div class="container">
+<%--<div class="jumbotron">
+    &lt;%&ndash;<div class="container">
         <h1><spring:message code="bookstore"/></h1>
         <p><spring:message code="storeinfo"/></p>
 
@@ -113,8 +121,27 @@
             <p><button type="submit" class="btn btn-primary btn-lg"><spring:message code="percenter"/> &raquo;</button></p>
         </form>
         </c:if>
+    </div>&ndash;%&gt;
+</div>--%>
+
+<br><br><br><br>
+<br><br>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 herobanner_content">
+                <div class="col-md-6">
+                    <h1>Welcome to Online Bookstore</h1>
+                    <p>OKR, weekly check-ins and daily stand-ups to help you build and maintain engaged, aligned and productive teams no matter where they are.</p>
+
+                </div>
+                <div class="col-md-6">
+                    <img class="img-responsive" src="https://www.newsteer.com/images/herobanner-new.png" alt="One on One Check-ins to know the pulse and engagement of your team">
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</header>
 
 <div class="container">
     <!-- Example row of columns -->
@@ -122,17 +149,14 @@
     <c:if test="${!empty bookList}">
         <c:forEach var="book" items="${bookList}" varStatus="status">
             <c:if test="${status.index % 3 == 0}">
-                </div>
+                </div><br>
                 <div class="row">
             </c:if>
             <div class="col-md-4">
                 <h2>${book.bName}</h2>
-                
-                <img class="img-rounded book-img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492103679458&di=ca37e6033960b495824dfbf9766097ae&imgtype=0&src=http%3A%2F%2Fimg1.cache.netease.com%2Fcatchpic%2F3%2F30%2F3011E7D99CAAB360392CF4470D32E906.jpg">
-                <p>${book.bDiscr}</p>
-
+                <img class="img-rounded book-img" src="${book.bCover}">
+                <p> Price: <font color="#FF0000">￥ ${book.bPrice} </font><br>Stock: ${book.bQuantity}<br>Producer: <b>CMB</b><br>${book.bDiscr}</p>
                 <div>
-
                 <c:if test="${role == 'user'}">
 
                     <form style="display:inline-block;" action="<c:url value="/addCart"/>" method="post">
@@ -156,6 +180,14 @@
     </div>
     <hr>
     <footer>
+        <nav style="text-align: right">
+        <ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+        </nav>
         <p>&copy; 2016 Company, Inc.</p>
     </footer>
 </div> <!-- /container -->

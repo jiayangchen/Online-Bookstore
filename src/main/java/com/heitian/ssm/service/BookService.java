@@ -6,4 +6,7 @@ import java.util.List;
 public interface BookService {
     List<Book> getAllBook();
     List<Book> getAllBookCN();
+
+    void updateBookStock(Long bid, int quan);
+    void updateBookCNStock(Long bid, int quan);
 }

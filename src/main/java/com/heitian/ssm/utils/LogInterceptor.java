@@ -13,10 +13,10 @@ public class LogInterceptor {
     private final Logger logger = LoggerFactory.getLogger(LogInterceptor.class);
     @Before(value = "execution(* com.heitian.ssm.controller.*.*(..))")
     public void before(){
-        logger.info("login start!");
+        logger.info("method start!");
     }
     @After(value = "execution(* com.heitian.ssm.controller.*.*(..))")
     public void after(){
-        logger.info("login end!");
+        logger.info("method end!");
     }
 }

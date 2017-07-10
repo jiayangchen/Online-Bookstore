@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-    <p>admin test</p>
+    <p>${target}</p>
 </body>
 </html>

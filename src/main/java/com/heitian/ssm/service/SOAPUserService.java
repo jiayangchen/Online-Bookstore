@@ -1,20 +1,22 @@
 package com.heitian.ssm.service;
+import com.heitian.ssm.model.Book;
 import com.heitian.ssm.model.User;
 import com.heitian.ssm.utils.WsConstants;
+import org.json.JSONArray;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
+import java.util.List;
 
 
 /**
  * Created by ChenJiayang on 2017/5/14.
  */
 
-@WebService
+@WebService(targetNamespace="heitian")
+@SOAPBinding(style = Style.RPC)
 public interface SOAPUserService {
-    @WebMethod
-    public String getUserName(@WebParam(name = "userId")String userId);
-    @WebMethod
-    public User getUser(@WebParam(name = "userId")String userId);
+    String sayHi(String text);
+    String searchBook(String bname);
 }

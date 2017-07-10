@@ -10,6 +10,7 @@
         <result column="Price" property="bPrice" jdbcType="DOUBLE"/>
         <result column="Quantity" property="bQuantity" jdbcType="BIGINT"/>
         <result column="Discr" property="bDiscr" jdbcType="VARCHAR"/>
+        <result column="Cover" property="bCover" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectAllBook" parameterType="com.heitian.ssm.model.Book"
@@ -19,7 +20,19 @@
 
     <select id="selectAllBookCN" parameterType="com.heitian.ssm.model.Book"
             resultMap="BookBaseMap">
-        SELECT * FROM bookCN
+        SELECT * FROM bookcn
     </select>
+
+    <update id="updateBookStock" parameterType="com.heitian.ssm.model.Book">
+        UPDATE book
+        SET Quantity = #{1}
+        WHERE BookID = #{0}
+    </update>
+
+    <update id="updateBookCNStock" parameterType="com.heitian.ssm.model.Book">
+        UPDATE bookcn
+        SET Quantity = #{1}
+        WHERE BookID = #{0}
+    </update>
 
 </mapper>

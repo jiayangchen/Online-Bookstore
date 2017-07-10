@@ -9,4 +9,5 @@ import java.util.List;
 public interface UserService {
     List<User> getAllUser();
     User getUserByName(String userName);
+    void updateUser(User user);
 }

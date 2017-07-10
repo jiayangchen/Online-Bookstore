@@ -3,18 +3,36 @@
 <mapper namespace="com.heitian.ssm.dao.OrderDao">
 
     <resultMap id="OrderBaseMap" type="com.heitian.ssm.model.Order">
-        <id column="OrderID" property="oid" jdbcType="BIGINT"/>
-        <result column="UserID" property="ouid" jdbcType="BIGINT"/>
-        <result column="Amount" property="amount" jdbcType="BIGINT"/>
-        <result column="DDate" property="date" jdbcType="VARCHAR"/>
+        <id column="oid" property="oid" jdbcType="BIGINT"/>
+        <result column="ocode" property="ocode" jdbcType="VARCHAR"/>
+        <result column="ouid" property="ouid" jdbcType="BIGINT"/>
+        <result column="opid" property="opid" jdbcType="BIGINT"/>
+        <result column="o_create_time" property="o_create_time" jdbcType="TIMESTAMP"/>
+        <result column="o_status" property="o_status" jdbcType="BIGINT"/>
+        <result column="o_amount" property="o_amount" jdbcType="DOUBLE"/>
     </resultMap>
 
     <insert id="addOrder" parameterType="com.heitian.ssm.model.Order">
-        INSERT INTO table_order(OrderID, UserID, Amount, DDate) VALUES (#{oid},#{ouid},#{amount},#{date})
+        INSERT INTO table_order(oid, ocode, ouid, opid, o_create_time,o_status,o_amount)
+        VALUES
+        (#{oid},#{ocode},#{ouid},#{opid},#{o_create_time},#{o_status},#{o_amount})
     </insert>
 
     <select id="selectAllOrder" resultMap="OrderBaseMap">
         SELECT * FROM table_order
+    </select>
+
+    <update id="updateOrderStatus" parameterType="com.heitian.ssm.model.Order">
+        UPDATE table_order
+        SET o_status = #{1}
+        WHERE ocode = #{0}
+    </update>
+
+    <select id="getOrderByUId" resultMap="OrderBaseMap">
+        SELECT * FROM table_order
+        WHERE
+        ouid = #{0}
+        ORDER BY o_create_time
     </select>
 
 </mapper>

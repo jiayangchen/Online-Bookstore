@@ -9,4 +9,6 @@ import java.util.List;
 public interface OrderDao {
     void addOrder(Order order);
     List<Order> selectAllOrder();
+    void updateOrderStatus(String orderCode, int status);
+    List<Order> getOrderByUId(Long uid);
 }

@@ -1,18 +1,9 @@
 package com.heitian.ssm.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.heitian.ssm.model.*;
-import com.heitian.ssm.service.BookService;
-import com.heitian.ssm.service.OrderService;
-import com.heitian.ssm.service.ProductService;
-import com.heitian.ssm.service.UserService;
+import com.heitian.ssm.service.*;
 import com.heitian.ssm.utils.DecriptUtil;
-import com.heitian.ssm.utils.FormatModel;
-import com.heitian.ssm.utils.LogInterceptor;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -21,10 +12,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,38 +20,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.text.CharacterIterator;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.servlet.support.JstlUtils;
-import org.springframework.web.servlet.support.RequestContext;
-import sun.plugin.javascript.ocx.JSObject;
-
 import javax.jms.Destination;
 
 @Controller
 public class WelController {
 
-    private Logger log = Logger.getLogger(CartController.class);
     @Autowired
     private BookService bookService;
     @Autowired
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderItemService orderItemService;
     @Autowired
     private Cart cart;
     @Autowired
@@ -75,95 +50,16 @@ public class WelController {
     private Logger logger = Logger.getLogger(WelController.class);
     
     @RequestMapping("/welcome")
-    public String welCome(@RequestParam(value="username",defaultValue="5140379040") String username,
-                          @RequestParam(value="password",defaultValue="cao") String password,
+    public String welCome(@RequestParam(value="username") String username,
+                          @RequestParam(value="password") String password,
                           HttpServletRequest request,
-                          HttpSession session,
-                          Model model,
-                          @RequestParam(value="langType", defaultValue="zh") String langType){
+                          Model model){
 
-        logger.info("login ....");
 
-        if(!model.containsAttribute("contentModel")){
+        logger.info(request.getSession().getAttribute("langType"));
+        HttpSession session = request.getSession();
+        Subject currentUser = SecurityUtils.getSubject();
 
-            if(langType.equals("zh")){
-                Locale locale = new Locale("zh", "CN");
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
-            }
-            else if(langType.equals("en")){
-                Locale locale = new Locale("en", "US");
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
-            }
-            else {
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, LocaleContextHolder.getLocale());
-            }
-            //从后台代码获取国际化信息
-            RequestContext requestContext = new RequestContext(request);
-
-            /*FormatModel formatModel=new FormatModel();
-            formatModel.setMoney(12345.678);
-            formatModel.setDate(new Date());
-            model.addAttribute("contentModel", formatModel);*/
-        }
-
-        if(username.equals("5140379040") && password.equals("cao")) {
-            session.setAttribute("role", "user");
-            List<Book> uBookList = new ArrayList<Book>();
-
-            if(langType.equals("zh")){
-                List<Book> bookList = bookService.getAllBookCN();
-                for (Book b : bookList) {
-                    if (b.getbCategory().equals("IT") || b.getbCategory().equals("Fiction")) {
-                        uBookList.add(b);
-                    }
-                }
-            }else{
-                List<Book> bookList = bookService.getAllBook();
-                for (Book b : bookList) {
-                    if (b.getbCategory().equals("IT") || b.getbCategory().equals("Fiction")) {
-                        uBookList.add(b);
-                    }
-                }
-            }
-            model.addAttribute("bookList", uBookList);
-            return "hello";
-        }else if(username.equals("Eason") && password.equals("123")){
-            session.setAttribute("role","admin");
-            List<Book>aBookList = new ArrayList<Book>();
-
-            if(langType.equals("zh")){
-                List<Book> bookList = bookService.getAllBookCN();
-                for(Book b : bookList){
-                    if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature")){
-                        aBookList.add(b);
-                    }
-                }
-            }else{
-                List<Book> bookList = bookService.getAllBook();
-                for(Book b : bookList){
-                    if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature")){
-                        aBookList.add(b);
-                    }
-                }
-            }
-            model.addAttribute("bookList", aBookList);
-            return "hello";
-        }else if(username.equals("Jack") && password.equals("12356")){
-            session.setAttribute("role","manager");
-
-            if(langType.equals("zh")){
-                List<Book> bookList = bookService.getAllBookCN();
-                model.addAttribute("bookList", bookList);
-            }else{
-                List<Book> bookList = bookService.getAllBook();
-                model.addAttribute("bookList", bookList);
-            }
-            return "hello";
-        }else{
-            return "refuse";
-        }
-
-        /*Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.isAuthenticated()){
             UsernamePasswordToken upToken = new UsernamePasswordToken(username, DecriptUtil.MD5(password));
             upToken.setRememberMe(false);
@@ -172,36 +68,61 @@ public class WelController {
                 //session = currentUser.getSession();
                 session.setAttribute("sess_username",username);
                 model.addAttribute("username",username);
-                log.info("查询所有图书信息");
                 List<Book> bookList = bookService.getAllBook();
-                *//*model.addAttribute("bookList", bookList);
-                return "hello";*//*
+                List<Book> bookListCN = bookService.getAllBookCN();
+                model.addAttribute("bookList", bookList);
 
-                if(currentUser.hasRole("manager")) {
-                    session.setAttribute("role","manager");
-                    model.addAttribute("bookList", bookList);
-                    return "hello";
-                }else if(currentUser.hasRole("user")){
+                if(currentUser.hasRole("manager"))
+                {
+                    if(session.getAttribute("langType").equals("zh")){
+                        session.setAttribute("role","manager");
+                        model.addAttribute("bookList", bookListCN);
+                        return "hello";
+                    }else {
+                        session.setAttribute("role","manager");
+                        model.addAttribute("bookList", bookList);
+                        return "hello";
+                    }
+                }
+
+                else if(currentUser.hasRole("user"))
+                {
                     session.setAttribute("role","user");
-                    List<Book>uBookList = new ArrayList<Book>();
-                    for(Book b : bookList){
-                        if(b.getbCategory().equals("IT") || b.getbCategory().equals("Fiction")){
-                            uBookList.add(b);
-                        }
+                    if(session.getAttribute("langType").equals("zh")){
+                        model.addAttribute("bookList", bookListCN);
+                        return "hello";
+                    }else{
+                        model.addAttribute("bookList", bookList);
+                        return "hello";
                     }
-                    model.addAttribute("bookList", uBookList);
-                    return "hello";
+                }
 
-                }else if(currentUser.hasRole("admin")){
+                else if(currentUser.hasRole("admin"))
+                {
                     session.setAttribute("role","admin");
-                    List<Book>aBookList = new ArrayList<Book>();
-                    for(Book b : bookList){
-                        if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature")){
-                            aBookList.add(b);
+                    List<Book>aBookList = new ArrayList<>();
+
+                    if(session.getAttribute("langType").equals("zh")){
+                        for(Book b : bookListCN)
+                        {
+                            if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature"))
+                            {
+                                aBookList.add(b);
+                            }
                         }
+                        model.addAttribute("bookList", aBookList);
+                        return "hello";
+                    }else{
+                        for(Book b : bookList)
+                        {
+                            if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature"))
+                            {
+                                aBookList.add(b);
+                            }
+                        }
+                        model.addAttribute("bookList", aBookList);
+                        return "hello";
                     }
-                    model.addAttribute("bookList", aBookList);
-                    return "hello";
                 }
             } catch (IncorrectCredentialsException ice) {
                 //System.out.println("Wrong Username Or Pwd");
@@ -217,7 +138,7 @@ public class WelController {
                 return "refuse";
             }
         }
-        return "refuse";*/
+        return "refuse";
     }
 
     @RequestMapping("/logout")
@@ -226,39 +147,65 @@ public class WelController {
                          Model model){
 
         logger.info("logout ....");
-
         httpSession.invalidate();
         cart.setContens(null);
-        //SecurityUtils.getSubject().logout();
+        SecurityUtils.getSubject().logout();
         return "index2";
     }
 
     @RequestMapping("/viewInfo")
     @ResponseBody
-    public String viewInfo(@RequestParam("addtocartBtn") Long bcid){
+    public String viewInfo(@RequestParam("addtocartBtn") Long bcid,
+                           HttpServletRequest request){
         logger.info("view book information ....");
-        List<Book> bookList = bookService.getAllBook();
+        if(request.getSession().getAttribute("langType").equals("en")) {
+            List<Book> bookList = bookService.getAllBook();
+            for (Book b : bookList) {
+                if (b.getBid().equals(bcid)) {
+                    return b.getbDiscr();
+                }
+            }
+        }
+        else{
+            List<Book> bookList = bookService.getAllBookCN();
+            for (Book b : bookList) {
+                if (b.getBid().equals(bcid)) {
+                    return b.getbDiscr();
+                }
+            }
+        }
+        /*List<Book> bookList = bookService.getAllBook();
         for(Book b : bookList){
             if(b.getBid().equals(bcid)){
                 return b.getbDiscr();
             }
-        }
+        }*/
         return null;
     }
 
-    @RequestMapping("/api/viewInfo")
+    /*@RequestMapping("/api/viewInfo")
     @ResponseBody
-    public String viewInfoAjax(@RequestParam("addtocartBtn") Long bcid){
+    public String viewInfoAjax(@RequestParam("addtocartBtn") Long bcid,
+                               HttpServletRequest request){
         logger.info("add into cart ....");
-
-        List<Book> bookList = bookService.getAllBook();
-        for(Book b : bookList){
-            if(b.getBid().equals(bcid)){
-                return b.getbDiscr();
+        if(request.getSession().getAttribute("langType").equals("en")) {
+            List<Book> bookList = bookService.getAllBook();
+            for (Book b : bookList) {
+                if (b.getBid().equals(bcid)) {
+                    return b.getbDiscr();
+                }
+            }
+        }
+        else{
+            List<Book> bookList = bookService.getAllBookCN();
+            for (Book b : bookList) {
+                if (b.getBid().equals(bcid)) {
+                    return b.getbDiscr();
+                }
             }
         }
         return null;
-    }
+    }*/
 
     @RequestMapping("/addCart")
     public String addCart(@RequestParam("addtocartBtn") Long bcid) {
@@ -291,31 +238,66 @@ public class WelController {
         return new ModelAndView("showCart").addObject("cart", cart.getContens());
     }
 
-    @RequestMapping(path="/pay",method= RequestMethod.POST)
-    public String pay(CartQuantityList cartList, HttpSession session) {
+    @RequestMapping(path="/pay", method= RequestMethod.POST)
+    public String pay(CartQuantityList cartList, HttpSession session,
+                      Model model) {
 
         logger.info("pay ....");
+
+        String username = (String) session.getAttribute("sess_username");
+        User user = userService.getUserByName(username);
+
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+
+        String orderCode = d.toString() + user.getUid();
 
         double totalAmount = 0.00;
         if (cart.getContens() == null) {
             cart.setContens(new ArrayList<Book>());
         }
+
         for (Book book : cart.getContens()) {
-            totalAmount += book.getbPrice() * cartList.fetchWithDefault(book.getBid(), 0);
+            int buyNum = cartList.fetchWithDefault(book.getBid(), 0);
+            book.setbQuantity(buyNum);
+            if(book.getbQuantity() < buyNum){
+                buyNum = book.getbQuantity();
+            }
+            totalAmount += book.getbPrice() * buyNum;
+            bookService.updateBookStock(book.getBid(),book.getbQuantity() - buyNum);
+            bookService.updateBookCNStock(book.getBid(),book.getbQuantity() - buyNum);
+
+            OrderItem ot = new OrderItem();
+            ot.setO_code(orderCode);
+            ot.setOt_bid(book.getBid());
+            ot.setOt_quantity(buyNum);
+            orderItemService.addOrderItem(ot);
         }
 
-        String username = (String) session.getAttribute("sess_username");
-        User user = userService.getUserByName(username);
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dateNowStr = sdf.format(d);
+        Date date = new Date();
+        Timestamp tp = new Timestamp(date.getTime());
+
         JSONObject orderJSON = new JSONObject();
+        orderJSON.put("ocode",orderCode);
         orderJSON.put("ouid",user.getUid());
-        orderJSON.put("totalAmount",totalAmount);
-        orderJSON.put("date",dateNowStr);
+        orderJSON.put("opid",0);
+        orderJSON.put("o_create_time",tp);
+        orderJSON.put("o_status",1); // 已提交
+        orderJSON.put("o_amount",totalAmount);
         productService.sendMessage(destination, orderJSON.toString());
-        System.out.println("--------------- producer has sent order -----------------");
+
+        model.addAttribute("ordername",username);
+        model.addAttribute("orderaddress","Shanghai Minhang District DongChuan Rd 800.");
+        model.addAttribute("orderlist",cart.getContens());
+        session.setAttribute("orderCode",orderCode);
         return "orderProcess";
+    }
+
+    @RequestMapping("/updateOrderStatus")
+    public String updateOrderStatus(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        String orderCode = (String) session.getAttribute("orderCode");
+        orderService.updateOrderStatus(orderCode,2);
+        return "forward:/back";
     }
 
     @RequestMapping("/resetCart")
@@ -351,21 +333,22 @@ public class WelController {
 
     @RequestMapping("/back")
     public String back(Model model,
-                       HttpSession session) {
+                       HttpServletRequest request) {
 
         logger.info("back ....");
-
+        HttpSession session = request.getSession();
+        model.addAttribute("username",session.getAttribute("sess_username"));
         List<Book> bookList = bookService.getAllBook();
+        List<Book> booklistCN = bookService.getAllBookCN();
         String role = (String) session.getAttribute("role");
         if (role.equals("user")) {
-            List<Book> uBookList = new ArrayList<Book>();
-            for (Book b : bookList) {
-                if (b.getbCategory().equals("IT") || b.getbCategory().equals("Fiction")) {
-                    uBookList.add(b);
-                }
+            if(session.getAttribute("langType").equals("zh")){
+                model.addAttribute("bookList", booklistCN);
+                return "hello";
+            }else{
+                model.addAttribute("bookList", bookList);
+                return "hello";
             }
-            model.addAttribute("bookList", uBookList);
-            return "hello";
         } else if(role.equals("admin")){
             List<Book>aBookList = new ArrayList<Book>();
             for(Book b : bookList){
@@ -376,19 +359,10 @@ public class WelController {
             model.addAttribute("bookList", aBookList);
             return "hello";
         }
-
         else{
             model.addAttribute("bookList", bookList);
             return "hello";
         }
-    }
-
-    @RequestMapping("/testJms")
-    public String testJms() {
-        for (int i=0; i<2; i++) {
-            productService.sendMessage(destination, "Hello,Producer!This is message:" + (i+1));
-        }
-        return "OrderProcess";
     }
 
     @RequestMapping("/chatroom")
@@ -400,68 +374,4 @@ public class WelController {
     public String chat(){
         return "chat";
     }
-
-    @RequestMapping("/sBook")
-    public String sBook(@RequestParam(value="sBookName") String sBookName,
-                        Model model) throws IOException {
-
-        logger.info("search book ....");
-
-        List<Book>bList = new ArrayList<>();
-        List<Book> bookList = bookService.getAllBookCN();
-        String result = getConnection("http://localhost:8080/web-ssm/rest/getbook/getBookById/",sBookName);
-
-        if(result.isEmpty()){
-            model.addAttribute("getResult","no such book");
-            return "sResult";
-        }
-
-        model.addAttribute("getResult",result);
-        return "sResult";
-    }
-
-    private String getConnection(String addr, String id) throws IOException {
-        //URL url = new URL("http://localhost:8080/web-ssm/rest/getbook/getBookById/"+id);
-        URL url = new URL(addr+id);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setConnectTimeout(15000);// 连接超时 单位毫秒
-        conn.setReadTimeout(15000);// 读取超时 单位毫秒
-        byte bytes[]=new byte[1024];
-        InputStream inStream=conn.getInputStream();
-        inStream.read(bytes, 0, inStream.available());
-        String str = new String(bytes, "utf-8");
-        return str;
-    }
-
-    /*@RequestMapping(value="/global", method = {RequestMethod.GET})
-    public String test(HttpServletRequest request,Model model, @RequestParam(value="langType", defaultValue="zh") String langType){
-        if(!model.containsAttribute("contentModel")){
-
-            if(langType.equals("zh")){
-                Locale locale = new Locale("zh", "CN");
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
-            }
-            else if(langType.equals("en")){
-                Locale locale = new Locale("en", "US");
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
-            }
-            else
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, LocaleContextHolder.getLocale());
-
-            //从后台代码获取国际化信息
-            RequestContext requestContext = new RequestContext(request);
-            model.addAttribute("money", requestContext.getMessage("money"));
-            model.addAttribute("date", requestContext.getMessage("date"));
-
-            FormatModel formatModel=new FormatModel();
-
-            formatModel.setMoney(12345.678);
-            formatModel.setDate(new Date());
-
-            model.addAttribute("contentModel", formatModel);
-        }
-        return "globaltest";
-    }*/
 }

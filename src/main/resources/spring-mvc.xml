@@ -13,8 +13,13 @@
 
     <!-- 自动扫描  @Controller-->
     <context:component-scan base-package="com.heitian.ssm.controller"/>
+    <context:component-scan base-package="com.heitian.ssm.redis" />
+
+    <bean id="hello" class="com.heitian.ssm.service.impl.SOAPUserServiceImpl" />
+    <jaxws:endpoint id="helloWorld" implementor="#hello" address="/HelloWorld" />
 
     <!-- AOP 打印日志 Start-->
+    <!--开启注解支持-->
     <aop:aspectj-autoproxy proxy-target-class="true">
     </aop:aspectj-autoproxy>
     <!-- AOP 打印日志 End -->

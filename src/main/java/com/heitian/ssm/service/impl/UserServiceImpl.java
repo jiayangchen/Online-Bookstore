@@ -28,4 +28,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUser() {
         return userDao.selectAllUser();
     }
+
+    @Override
+    public void updateUser(User user) {
+        userDao.updateUser(user.getSex(),user.getAddress(),user.getPhone(),user.getuName());
+    }
 }
