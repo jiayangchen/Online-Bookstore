@@ -59,7 +59,6 @@ public class WelController {
         logger.info(request.getSession().getAttribute("langType"));
         HttpSession session = request.getSession();
         Subject currentUser = SecurityUtils.getSubject();
-
         if(!currentUser.isAuthenticated()){
             UsernamePasswordToken upToken = new UsernamePasswordToken(username, DecriptUtil.MD5(password));
             upToken.setRememberMe(false);
@@ -74,7 +73,7 @@ public class WelController {
 
                 if(currentUser.hasRole("manager"))
                 {
-                    if(session.getAttribute("langType").equals("zh")){
+                    /*if(session.getAttribute("langType").equals("zh")){
                         session.setAttribute("role","manager");
                         model.addAttribute("bookList", bookListCN);
                         return "hello";
@@ -82,7 +81,7 @@ public class WelController {
                         session.setAttribute("role","manager");
                         model.addAttribute("bookList", bookList);
                         return "hello";
-                    }
+                    }*/
                 }
 
                 else if(currentUser.hasRole("user"))
@@ -99,7 +98,7 @@ public class WelController {
 
                 else if(currentUser.hasRole("admin"))
                 {
-                    session.setAttribute("role","admin");
+                    /*session.setAttribute("role","admin");
                     List<Book>aBookList = new ArrayList<>();
 
                     if(session.getAttribute("langType").equals("zh")){
@@ -122,7 +121,10 @@ public class WelController {
                         }
                         model.addAttribute("bookList", aBookList);
                         return "hello";
-                    }
+                    }*/
+                    List<User> userList = userService.getAllUser();
+                    model.addAttribute("userList", userList);
+                    return "admin/admin";
                 }
             } catch (IncorrectCredentialsException ice) {
                 //System.out.println("Wrong Username Or Pwd");
@@ -208,9 +210,12 @@ public class WelController {
     }*/
 
     @RequestMapping("/addCart")
-    public String addCart(@RequestParam("addtocartBtn") Long bcid) {
+    public String addCart(@RequestParam("addtocartBtn") Long bcid,
+                          HttpServletRequest request) {
 
         logger.info("add into cart ....");
+
+        HttpSession session = request.getSession();
 
         if (bcid == null || bcid <= 0) {
             return "forward:/cart";
@@ -219,7 +224,14 @@ public class WelController {
             cart.setContens(new ArrayList<Book>());
         }
 
-        List<Book> bookList = bookService.getAllBook();
+        List<Book> bookList = new ArrayList<>();
+
+        if(session.getAttribute("langType").equals("zh")){
+            bookList = bookService.getAllBookCN();
+        }else{
+            bookList = bookService.getAllBook();
+        }
+
         List<Book> cartBookList = new ArrayList<Book>();
         for(Book b : bookList){
             if(b.getBid().equals(bcid)){
@@ -236,6 +248,12 @@ public class WelController {
             cart.setContens(new ArrayList<Book>());
         }
         return new ModelAndView("showCart").addObject("cart", cart.getContens());
+    }
+
+    @RequestMapping("/cancelOrder")
+    @ResponseBody
+    public String cancelOrder(@RequestParam("cancelOrderId") String ocode){
+        return ocode;
     }
 
     @RequestMapping(path="/pay", method= RequestMethod.POST)
@@ -326,10 +344,6 @@ public class WelController {
         return "admin/admin";
     }
 
-    @RequestMapping("/test")
-    public String test(){
-        return "admin/test";
-    }
 
     @RequestMapping("/back")
     public String back(Model model,
@@ -350,14 +364,17 @@ public class WelController {
                 return "hello";
             }
         } else if(role.equals("admin")){
-            List<Book>aBookList = new ArrayList<Book>();
+            /*List<Book>aBookList = new ArrayList<Book>();
             for(Book b : bookList){
                 if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature")){
                     aBookList.add(b);
                 }
             }
             model.addAttribute("bookList", aBookList);
-            return "hello";
+            return "hello";*/
+            List<User> userList = userService.getAllUser();
+            model.addAttribute("userList", userList);
+            return "admin/admin";
         }
         else{
             model.addAttribute("bookList", bookList);

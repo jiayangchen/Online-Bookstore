@@ -95,7 +95,7 @@
                         <span class="sr-only">切换下拉菜单</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#"><spring:message code="literature"/></a></li>
+                        <li><a id="literature" href="#"><spring:message code="literature"/></a></li>
                         <li><a href="#"><spring:message code="science"/></a></li>
                         <li><a href="#"><spring:message code="novel"/></a></li>
                         <li><a href="#"><spring:message code="fiction"/></a></li>
@@ -109,20 +109,6 @@
             </div>
     </div>
 </nav>
-
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<%--<div class="jumbotron">
-    &lt;%&ndash;<div class="container">
-        <h1><spring:message code="bookstore"/></h1>
-        <p><spring:message code="storeinfo"/></p>
-
-        <c:if test="${role == 'admin'}">
-        <form action="<c:url value="/perCenter"/>" method="post">
-            <p><button type="submit" class="btn btn-primary btn-lg"><spring:message code="percenter"/> &raquo;</button></p>
-        </form>
-        </c:if>
-    </div>&ndash;%&gt;
-</div>--%>
 
 <br><br><br><br>
 <br><br>
@@ -235,6 +221,28 @@
             $('#bookInfoModal').modal('show');
         });
     })
+
+    $('#literature').click(function () {
+        var list = getBookCategory();
+        for() {
+           $('#ghdfdsa').innerText(list[i])
+        }
+    })
+
+    var getBookCategory = function(category) {
+        $.ajax({
+            async: false,
+            cache: false,
+            type: 'post',
+            dataType: 'json',
+            url: '<c:url value="/viewInfo"/>',
+            data: {"category": category},
+            error: function(data){alert("传递数据失败");},
+            success: function(data){
+                return data;
+            }
+        });
+    };
 
 </script>
 </body>

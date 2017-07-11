@@ -58,28 +58,48 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table">
+            <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>BookID</th>
-                    <th>BookName</th>
-                    <th>BookAuthor</th>
-                    <th>Description</th>
+                    <th>Order Code</th>
+                    <th>Order Price</th>
+                    <th>Order Create Time</th>
+                    <th>Order Status</th>
+                    <th>Order Details</th>
+                    <th>Operation</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:if test="${!empty target_booklist}">
-                    <c:forEach var="book" items="${target_booklist}">
+                <c:if test="${!empty result}">
+                    <c:forEach var="order" items="${result}">
                         <tr>
-                            <td>${book.bid}</td>
-                            <td>${book.bName}</td>
-                            <td>${book.bAuthor}</td>
-                            <td>${book.bDiscr}</td>
+                            <td>${order.ocode}</td>
+                            <td>${order.o_amount}</td>
+                            <td>${order.o_create_time}</td>
+                            <td>
+                                <c:if test="${order.o_status == 1}">
+                                    Submitted
+                                </c:if>
+                                <c:if test="${order.o_status == 2}">
+                                    Paid
+                                </c:if>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default">View Details</button>
+                            </td>
+                            <td>
+                                <c:if test="${order.o_status == 1}">
+                                    <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}">Cancel Order</button>
+                                </c:if>
+                                <c:if test="${order.o_status == 2}">
+                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
+                                </c:if>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:if>
 
-                <c:if test="${empty target_booklist}">
+                <c:if test="${empty result}">
                     Empty
                 </c:if>
                 </tbody>
@@ -87,7 +107,7 @@
         </div>
     </div>
     <nav style="text-align: right">
-    <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+        <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
     </nav><br><br>
 </div>
 
@@ -95,5 +115,3 @@
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
-
-

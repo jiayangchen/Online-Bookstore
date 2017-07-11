@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -38,6 +39,7 @@
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
     <![endif]-->
 </head>
 <body>
@@ -83,7 +85,27 @@
     </form>
 
     <br><br>
+
     <p class="lead">Order History</p>
+    <form class="navbar-form" action="<c:url value="/orderSearch"/>" method="post">
+        <div class="row">
+            <div class="form-inline">
+                <input name="ordersearch" type="text" class="form-control" placeholder="Search">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="submitted" value="1">Submitted
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="paid" value="2">Paid
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default"><spring:message code="search"/></button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
         <div class="col-md-12">
             <table class="table table-bordered">
@@ -112,8 +134,17 @@
                                     Paid
                                 </c:if>
                             </td>
-                            <td><button type="button" class="btn btn-default">View Details</button></td>
-                            <td><button type="button" class="btn btn-primary">Cancel Order</button></td>
+                            <td>
+                                <button type="button" class="btn btn-default">View Details</button>
+                            </td>
+                            <td>
+                                <c:if test="${order.o_status == 1}">
+                                    <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}">Cancel Order</button>
+                                </c:if>
+                                <c:if test="${order.o_status == 2}">
+                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
+                                </c:if>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:if>
@@ -121,6 +152,7 @@
                 <c:if test="${empty orderhistory}">
                     Empty
                 </c:if>
+
                 </tbody>
             </table>
         </div>
@@ -133,6 +165,19 @@
 <br><br><br>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+<script type="text/javascript">
+
+    $('.btn-order-cancel').click(function () {
+        var btn = $(this);
+        var orderId = (btn.data('bid'));
+        alert(orderId);
+        var url = "<c:url value="/cancelOrder"/>";
+        $.post(url,{cancelOrderId : orderId},function(data){
+            alert(data);
+        });
+    })
+
+</script>
 </body>
 </html>
 

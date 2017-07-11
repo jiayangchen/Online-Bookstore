@@ -55,24 +55,76 @@
     <div class="page-header">
         <h1>Admin Center</h1>
     </div>
+    <p class="lead">Add User</p>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>UserName</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                    <th>Sex</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td><input type="text" name="sex" class="form-control" placeholder="Name"></td>
+                            <td><input type="text" name="sex" class="form-control" placeholder="Password"></td>
+                            <td>
+                                <input type="text" name="sex" class="form-control" placeholder="Role">
+                            </td>
+                            <td>
+                                <input type="text" name="sex" class="form-control" placeholder="Sex">
+                            </td>
+                            <td><input type="text" name="sex" class="form-control" placeholder="Address"></td>
+                            <td><input type="text" name="sex" class="form-control" placeholder="Phone"></td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav style="text-align: right">
+        <button type="submit" class="btn btn-primary">Add User</button>
+    </nav>
 
+    <p class="lead">User Management</p>
         <div class="row">
             <div class="col-md-12">
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>ID</th>
                         <th>UserName</th>
                         <th>Password</th>
+                        <th>Role</th>
+                        <th>Sex</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Operation</th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:if test="${!empty userList}">
                         <c:forEach var="user" items="${userList}">
                             <tr>
-                                <td>${user.uid}</td>
                                 <td>${user.uName}</td>
                                 <td>${user.uPassword}</td>
+                                <td>
+                                    <input type="number" name="sex" class="form-control" id="sex" placeholder="${user.rid}">
+                                </td>
+                                <td>
+                                    <c:if test="${user.sex == 1}">
+                                        Man
+                                    </c:if>
+                                    <c:if test="${user.sex == 0}">
+                                        Woman
+                                    </c:if>
+                                </td>
+                                <td>${user.address}</td>
+                                <td>${user.phone}</td>
+                                <td><button type="submit" class="btn btn-danger">Delete</button></td>
                             </tr>
                         </c:forEach>
                     </c:if>
@@ -84,7 +136,10 @@
                 </table>
             </div>
         </div>
-    <a class="btn btn-warning" href="<c:url value="/back"/>">Back</a>
+    <nav style="text-align: right">
+        <button type="submit" class="btn btn-success">Save Change</button>
+        <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
+    </nav><br><br><br>
 </div>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

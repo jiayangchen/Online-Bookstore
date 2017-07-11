@@ -35,4 +35,15 @@
         ORDER BY o_create_time
     </select>
 
+    <select id="getOrderByCode" resultMap="OrderBaseMap">
+        SELECT * FROM table_order
+        WHERE
+        ocode = #{0}
+    </select>
+
+    <select id="getOrderByStatus" resultMap="OrderBaseMap">
+        SELECT * FROM table_order
+        WHERE
+        ouid = #{0} AND o_status = #{1}
+    </select>
 </mapper>

@@ -9,4 +9,6 @@ public interface OrderService {
     List<Order> getAllOrder();
     void updateOrderStatus(String orderCode, int status);
     List<Order> getOrderByName(String name);
+    Order getOrderByCode(String ocode);
+    List<Order> getOrderByStatus(String name, int status);
 }

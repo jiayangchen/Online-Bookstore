@@ -66,8 +66,6 @@
     </filter-mapping>
     <!-- shiro filter end -->
 
-
-
     <!-- spring mvc servlet start -->
     <servlet>
         <servlet-name>SpringMVC</servlet-name>

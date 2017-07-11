@@ -52,8 +52,6 @@
         %><%=s.getAttribute("sess_username")%>'s Shopping Cart</h1>
     </div>
 
-
-
     <form action="<c:url value="/pay"/>" method="post">
 
     <div class="row">

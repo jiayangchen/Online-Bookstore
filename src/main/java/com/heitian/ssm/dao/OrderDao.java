@@ -11,4 +11,6 @@ public interface OrderDao {
     List<Order> selectAllOrder();
     void updateOrderStatus(String orderCode, int status);
     List<Order> getOrderByUId(Long uid);
+    Order getOrderByCode(String ocode);
+    List<Order> getOrderByStatus(Long uid, int status);
 }

@@ -1,21 +1,10 @@
 package com.heitian.ssm.utils;
 
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 public class DecriptUtil {
 
-    /** 
-     * @author：jiayangchen
-     * @description： MD5加密
-     * @parameter：   str：待加密字符串
-     * @return：  加密串
-    **/
     public static String MD5(String str) {
         try {
             // 获得MD5摘要算法的 MessageDigest 对象
@@ -40,7 +29,4 @@ public class DecriptUtil {
         }
         return null;
     }
-    
-
-
 }
