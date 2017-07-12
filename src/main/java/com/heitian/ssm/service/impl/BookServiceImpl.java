@@ -38,4 +38,14 @@ public class BookServiceImpl implements BookService{
     public void updateBookCNStock(Long bid, int quan) {
         bookDao.updateBookCNStock(bid,quan);
     }
+
+    @Override
+    public List<Book> getAllBookByCategory(String category) {
+        return bookDao.selectAllBookByCategory(category);
+    }
+
+    @Override
+    public List<Book> getAllBookCNByCategory(String category) {
+        return bookDao.selectAllBookCNByCategory(category);
+    }
 }

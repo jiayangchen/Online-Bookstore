@@ -23,6 +23,20 @@
         SELECT * FROM bookcn
     </select>
 
+    <select id="selectAllBookByCategory" parameterType="com.heitian.ssm.model.Book"
+            resultMap="BookBaseMap">
+        SELECT * FROM book
+        WHERE
+        Category = #{0}
+    </select>
+
+    <select id="selectAllBookCNByCategory" parameterType="com.heitian.ssm.model.Book"
+            resultMap="BookBaseMap">
+        SELECT * FROM bookcn
+        WHERE
+        Category = #{0}
+    </select>
+
     <update id="updateBookStock" parameterType="com.heitian.ssm.model.Book">
         UPDATE book
         SET Quantity = #{1}

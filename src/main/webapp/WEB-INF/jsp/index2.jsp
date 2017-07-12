@@ -27,32 +27,6 @@
 <body>
 <%--<a href="<c:url value="/welcome"/>"><h1>Hello World</h1></a>--%>
 
-<header id="duobook-hero" data-section="home" role="banner" >
-    <div class="duobook-overlay"></div>
-    <div class="duobook-intro">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-md-6 duobook-text">
-                    <h2 class="to-animate intro-animate-1">Keep a good story going.</h2>
-                    <p class="to-animate intro-animate-2">With Duobook, you can read or listen any time you want — we'll always save your place.</p>
-                    <p class="to-animate intro-animate-3">
-                        <a class="app-store-link" href="https://itunes.apple.com/app/apple-store/id1177007125?pt=359707&ct=duobookcom&mt=8" >
-                            <img src="https://duobook.com/images/appstorebadge.svg" alt="Available on the App Store" />
-                        </a>
-                        <small style="display:block;font-size:0.5em;font-style:italic;margin-top:1em;">Android coming in 2017: <a href="#" data-nav-section="subscribe" style="color:white;text-decoration:underline" class="js-check-android">Notify me!</a></small>
-                    </p>
-                </div>
-                <div id="image-swap" class="col-md-6 text-right duobook-intro-img to-animate intro-animate-4">
-                    <img src="https://duobook.com/images/hero-hand-text.png" srcset="images/hero-hand-text@2x.png 2x" alt="Duobook for iOS">
-                    <img id="imgtgl" src="https://duobook.com/images/hero-hand-audio.png" srcset="https://duobook.com/images/hero-hand-audio@2x.png" alt="Duobook for iOS">
-                </div>
-
-            </div>
-        </div>
-    </div>
-</header>
-
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -88,11 +62,12 @@
         <input type="text" name="username" id="inputEmail" class="form-control" placeholder="<spring:message code="email"/>" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="<spring:message code="password"/>" required>
+        <br>
         <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="login"/></button>
     </form>
-    <form action="<c:url value="/logout"/>" method="post">
+    <%--<form action="<c:url value="/logout"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit"><spring:message code="reset"/></button>
-    </form>
+    </form>--%>
 
     <%--<form action="<c:url value="/testJms"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit">Jms</button>

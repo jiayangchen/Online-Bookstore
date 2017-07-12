@@ -20,6 +20,7 @@ public class User implements Serializable{
     private int sex;
     private String address;
     private Long phone;
+    private int isDelete;
 
     public Long getUid() {
         return uid;
@@ -75,5 +76,13 @@ public class User implements Serializable{
 
     public void setPhone(Long phone) {
         this.phone = phone;
+    }
+
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
 }

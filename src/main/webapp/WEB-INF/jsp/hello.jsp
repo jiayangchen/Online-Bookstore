@@ -95,14 +95,14 @@
                         <span class="sr-only">切换下拉菜单</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a id="literature" href="#"><spring:message code="literature"/></a></li>
-                        <li><a href="#"><spring:message code="science"/></a></li>
-                        <li><a href="#"><spring:message code="novel"/></a></li>
-                        <li><a href="#"><spring:message code="fiction"/></a></li>
-                        <li><a href="#"><spring:message code="IT"/></a></li>
-                        <li><a href="#"><spring:message code="biography"/></a></li>
+                        <li><a href="getLiterature?cate=literature"><spring:message code="literature"/></a></li>
+                        <li><a href="getLiterature?cate=science"><spring:message code="science"/></a></li>
+                        <li><a href="getLiterature?cate=novel"><spring:message code="novel"/></a></li>
+                        <li><a href="getLiterature?cate=fiction"><spring:message code="fiction"/></a></li>
+                        <li><a href="getLiterature?cate=IT"><spring:message code="IT"/></a></li>
+                        <li><a href="getLiterature?cate=biography"><spring:message code="biography"/></a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><spring:message code="all"/></a></li>
+                        <li><a href="getLiterature?cate=all"><spring:message code="all"/></a></li>
                     </ul>
                 </div>
                 </form>
@@ -221,28 +221,6 @@
             $('#bookInfoModal').modal('show');
         });
     })
-
-    $('#literature').click(function () {
-        var list = getBookCategory();
-        for() {
-           $('#ghdfdsa').innerText(list[i])
-        }
-    })
-
-    var getBookCategory = function(category) {
-        $.ajax({
-            async: false,
-            cache: false,
-            type: 'post',
-            dataType: 'json',
-            url: '<c:url value="/viewInfo"/>',
-            data: {"category": category},
-            error: function(data){alert("传递数据失败");},
-            success: function(data){
-                return data;
-            }
-        });
-    };
 
 </script>
 </body>

@@ -10,6 +10,7 @@
         <result column="sex" property="sex" jdbcType="BIGINT"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="BIGINT"/>
+        <result column="isDelete" property="isDelete" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectUserByName" parameterType="java.lang.String" resultMap="UserBaseMap">
@@ -19,12 +20,20 @@
 
     <select id="selectAllUser" parameterType="com.heitian.ssm.model.User"
             resultMap="UserBaseMap">
-        SELECT * FROM table_user
+        SELECT * FROM table_user WHERE isDelete = 0
     </select>
 
     <update id="updateUser" parameterType="com.heitian.ssm.model.User">
         UPDATE table_user
-        SET sex = #{0}, address = #{1}, phone = #{2}
-        WHERE username = #{3}
+        SET sex = #{0}, address = #{1}, phone = #{2}, isDelete = #{3},roleId = #{4}
+        WHERE username = #{5}
     </update>
+
+    <insert id="addUser" parameterType="com.heitian.ssm.model.User">
+        INSERT INTO table_user(id,username,password,roleId,sex,address,phone)
+        VALUES
+        (#{uid},#{uName},#{uPassword},#{rid},#{sex},#{address},#{phone})
+    </insert>
+
+
 </mapper>

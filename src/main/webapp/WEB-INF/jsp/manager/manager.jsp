@@ -26,7 +26,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>User Information</title>
+    <title>Producer Center</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -53,50 +53,83 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Admin Center</h1>
+        <h1>Producer Center</h1>
     </div>
     <nav style="text-align: right">
         <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
     </nav><br>
-    <p class="lead">Add User</p>
-    <form action="<c:url value="/addUser"/>" method="post">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>UserName</th>
-                    <th>Password</th>
-                    <th>Role</th>
-                    <th>Sex</th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
-                </tr>
-                </thead>
-                <tbody>
-                        <tr>
-                            <td><input type="text" name="name" class="form-control" placeholder="Name"></td>
-                            <td><input type="text" name="password" class="form-control" placeholder="Password"></td>
-                            <td>
-                                <input type="text" name="role" class="form-control" placeholder="Role">
-                            </td>
-                            <td>
-                                <input type="text" name="sex" class="form-control" placeholder="Sex">
-                            </td>
-                            <td><input type="text" name="address" class="form-control" placeholder="Address"></td>
-                            <td><input type="text" name="phone" class="form-control" placeholder="Phone"></td>
-                        </tr>
-                </tbody>
-            </table>
+    <p class="lead">Order Managerment</p>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Order Code</th>
+                        <th>User Id</th>
+                        <th>Producer Id</th>
+                        <th>Create Time</th>
+                        <th>Status</th>
+                        <th>Price</th>
+                        <th>Accept</th>
+                        <th>Refuse</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:if test="${!empty orderList}">
+                    <c:forEach var="order" items="${orderList}">
+                    <tr>
+                        <td>${order.ocode}</td>
+                        <td>${order.ouid}</td>
+                        <td>${order.opid}</td>
+                        <td>${order.o_create_time}</td>
+                        <td>
+                            <c:if test="${order.o_status == 0}">
+                                <font color="#EE2C2C"><b>Refused</b></font>
+                            </c:if>
+                            <c:if test="${order.o_status == 1}">
+                                <font color="#EEC900"><b>Submitted</b></font>
+                            </c:if>
+                            <c:if test="${order.o_status == 2}">
+                                <font color="#4876FF"><b>Paid</b></font>
+                            </c:if>
+                            <c:if test="${order.o_status == 3}">
+                                <font color="#32CD32"><b>Accepted</b></font>
+                            </c:if>
+                        </td>
+                        <td>${order.o_amount}</td>
+                        <td>
+                            <c:if test="${order.o_status == 1}">
+                                <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success" disabled="disabled">Accept</button>
+                            </c:if>
+                            <c:if test="${order.o_status != 1}">
+                                <form action="<c:url value="/acceptOrder"/>" method="post">
+                                    <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success">Accept</button>
+                                </form>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${order.o_status == 1}">
+                                <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger" disabled="disabled">Refuse</button>
+                            </c:if>
+                            <c:if test="${order.o_status != 1}">
+                                <form action="<c:url value="/deleteOrder"/>" method="post">
+                                    <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger">Refuse</button>
+                                </form>
+                            </c:if>
+                        </td>
+                    </tr>
+                    </c:forEach>
+                    </c:if>
+
+                    <c:if test="${empty orderList}">
+                        Empty
+                    </c:if>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <nav style="text-align: right">
-        <button type="submit" class="btn btn-primary">Add User</button>
-    </nav>
-    </form>
 
-
-    <p class="lead">User Management</p>
+   <%-- <p class="lead">User Management</p>
     <form action="<c:url value="/updateUser"/>" method="post">
         <div class="row">
             <div class="col-md-12">
@@ -121,7 +154,7 @@
                                 <td>${user.uPassword}</td>
                                 <td>
                                     <c:if test="${user.rid == 1}">
-                                    <input type="text" name="role" class="form-control" placeholder="User">
+                                        <input type="text" name="role" class="form-control" placeholder="User">
                                     </c:if>
                                     <c:if test="${user.rid == 2}">
                                         <input type="text" name="role" class="form-control" placeholder="Admin">
@@ -145,7 +178,7 @@
                                 </td>
                                 <td>
                                     <form action="<c:url value="/deleteUser"/>" method="post">
-                                    <button value="${user.uName}" name="deleteUser" type="submit" class="btn btn-danger">Delete</button>
+                                        <button value="${user.uName}" name="deleteUser" type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -160,11 +193,12 @@
             </div>
         </div>
     </form>
-
+    <nav style="text-align: right">
+        <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
+    </nav><br><br><br>--%>
 </div>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
-

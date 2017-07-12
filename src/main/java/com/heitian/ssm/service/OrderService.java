@@ -11,4 +11,5 @@ public interface OrderService {
     List<Order> getOrderByName(String name);
     Order getOrderByCode(String ocode);
     List<Order> getOrderByStatus(String name, int status);
+    List<Order> getOrderByPId(long opid);
 }

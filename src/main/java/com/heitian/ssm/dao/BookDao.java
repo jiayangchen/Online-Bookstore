@@ -11,6 +11,9 @@ public interface BookDao {
     List<Book> selectAllBook();
     List<Book> selectAllBookCN();
 
+    List<Book> selectAllBookByCategory(String category);
+    List<Book> selectAllBookCNByCategory(String category);
+
     void updateBookStock(Long bid,int quan);
     void updateBookCNStock(Long bid, int quan);
 

@@ -50,6 +50,10 @@
     <div class="page-header">
         <h1>User Center —— <small>${userinfo.uName}</small></h1>
     </div>
+    <nav style="text-align: right">
+        <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+    </nav>
+
     <p class="lead">Personal Information</p>
 
     <form action="<c:url value="/updatePerson"/>" method="post">
@@ -91,16 +95,19 @@
         <div class="row">
             <div class="form-inline">
                 <input name="ordersearch" type="text" class="form-control" placeholder="Search">
+                &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name="submitted" value="1">Submitted
                     </label>
                 </div>
+                &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name="paid" value="2">Paid
                     </label>
                 </div>
+                &nbsp;&nbsp;
                 <button type="submit" class="btn btn-default"><spring:message code="search"/></button>
             </div>
         </div>
@@ -127,21 +134,25 @@
                             <td>${order.o_amount}</td>
                             <td>${order.o_create_time}</td>
                             <td>
+                                <c:if test="${order.o_status == 0}">
+                                    <font color="#EE2C2C"><b>Refused</b></font>
+                                </c:if>
                                 <c:if test="${order.o_status == 1}">
-                                    Submitted
+                                    <font color="#EEC900"><b>Submitted</b></font>
                                 </c:if>
                                 <c:if test="${order.o_status == 2}">
-                                    Paid
+                                    <font color="#4876FF"><b>Paid</b></font>
                                 </c:if>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-default">View Details</button>
+                                <input id="ocode" name="ocode" value="${order.ocode}" type="hidden">
+                                <button onclick="ajaxBook()" type="submit" class="btn btn-default btn-book-view">View Details</button>
                             </td>
                             <td>
                                 <c:if test="${order.o_status == 1}">
                                     <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}">Cancel Order</button>
                                 </c:if>
-                                <c:if test="${order.o_status == 2}">
+                                <c:if test="${order.o_status != 1}">
                                     <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
                                 </c:if>
                             </td>
@@ -158,25 +169,39 @@
         </div>
     </div>
     <br>
-    <nav style="text-align: right">
-    <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
-    </nav>
+
+    <p class="lead">Order Details</p>
+    <div id="bookstore"></div>
+
 </div>
 <br><br><br>
+
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
-
-    $('.btn-order-cancel').click(function () {
-        var btn = $(this);
-        var orderId = (btn.data('bid'));
-        alert(orderId);
-        var url = "<c:url value="/cancelOrder"/>";
-        $.post(url,{cancelOrderId : orderId},function(data){
-            alert(data);
-        });
-    })
-
+    var xmlHttpRequest = null;
+    function ajaxBook() {
+        if(window.ActiveXObject) {
+            xmlHttpRequest = new ActionXObject("Microsoft.XMLHTTP");
+        }
+        else if(window.XMLHttpRequest) {
+            xmlHttpRequest = new XMLHttpRequest();
+        }
+        if(xmlHttpRequest != null) {
+            var ocode = document.getElementById("ocode").value;
+            xmlHttpRequest.open("POST", "viewDetails?ocode=" + ocode, true);
+            xmlHttpRequest.onreadystatechange = ajaxBookCall;
+            xmlHttpRequest.send();
+        }
+    }
+    function ajaxBookCall() {
+        if(xmlHttpRequest.readyState == 4 ) {
+            if(xmlHttpRequest.status == 200) {
+                var text = xmlHttpRequest.responseText;
+                document.getElementById("bookstore").innerHTML = "<p>"+ text + "</p>";
+            }
+        }
+    }
 </script>
 </body>
 </html>

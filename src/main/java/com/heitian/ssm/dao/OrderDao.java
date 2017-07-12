@@ -13,4 +13,5 @@ public interface OrderDao {
     List<Order> getOrderByUId(Long uid);
     Order getOrderByCode(String ocode);
     List<Order> getOrderByStatus(Long uid, int status);
+    List<Order> getOrderByPId(long opid);
 }

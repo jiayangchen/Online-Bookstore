@@ -46,4 +46,9 @@
         WHERE
         ouid = #{0} AND o_status = #{1}
     </select>
+
+    <select id="getOrderByPId" resultMap="OrderBaseMap">
+        SELECT * FROM table_order
+        WHERE opid = #{0}
+    </select>
 </mapper>

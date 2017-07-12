@@ -54,8 +54,7 @@ public class WelController {
                           @RequestParam(value="password") String password,
                           HttpServletRequest request,
                           Model model){
-
-
+        //SecurityUtils.getSubject().logout();
         logger.info(request.getSession().getAttribute("langType"));
         HttpSession session = request.getSession();
         Subject currentUser = SecurityUtils.getSubject();
@@ -64,7 +63,6 @@ public class WelController {
             upToken.setRememberMe(false);
             try {
                 currentUser.login(upToken);
-                //session = currentUser.getSession();
                 session.setAttribute("sess_username",username);
                 model.addAttribute("username",username);
                 List<Book> bookList = bookService.getAllBook();
@@ -73,15 +71,10 @@ public class WelController {
 
                 if(currentUser.hasRole("manager"))
                 {
-                    /*if(session.getAttribute("langType").equals("zh")){
-                        session.setAttribute("role","manager");
-                        model.addAttribute("bookList", bookListCN);
-                        return "hello";
-                    }else {
-                        session.setAttribute("role","manager");
-                        model.addAttribute("bookList", bookList);
-                        return "hello";
-                    }*/
+                    User user = userService.getUserByName(username);
+                    List<Order> orderListForProducer = orderService.getOrderByPId(user.getUid());
+                    model.addAttribute("orderList",orderListForProducer);
+                    return "manager/manager";
                 }
 
                 else if(currentUser.hasRole("user"))
@@ -98,30 +91,6 @@ public class WelController {
 
                 else if(currentUser.hasRole("admin"))
                 {
-                    /*session.setAttribute("role","admin");
-                    List<Book>aBookList = new ArrayList<>();
-
-                    if(session.getAttribute("langType").equals("zh")){
-                        for(Book b : bookListCN)
-                        {
-                            if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature"))
-                            {
-                                aBookList.add(b);
-                            }
-                        }
-                        model.addAttribute("bookList", aBookList);
-                        return "hello";
-                    }else{
-                        for(Book b : bookList)
-                        {
-                            if(b.getbCategory().equals("Science") || b.getbCategory().equals("Literature"))
-                            {
-                                aBookList.add(b);
-                            }
-                        }
-                        model.addAttribute("bookList", aBookList);
-                        return "hello";
-                    }*/
                     List<User> userList = userService.getAllUser();
                     model.addAttribute("userList", userList);
                     return "admin/admin";
@@ -176,12 +145,6 @@ public class WelController {
                 }
             }
         }
-        /*List<Book> bookList = bookService.getAllBook();
-        for(Book b : bookList){
-            if(b.getBid().equals(bcid)){
-                return b.getbDiscr();
-            }
-        }*/
         return null;
     }
 

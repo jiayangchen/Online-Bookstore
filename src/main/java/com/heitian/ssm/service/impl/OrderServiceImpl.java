@@ -56,4 +56,9 @@ public class OrderServiceImpl implements OrderService{
         User user = userDao.selectUserByName(name);
         return orderDao.getOrderByStatus(user.getUid(),status);
     }
+
+    @Override
+    public List<Order> getOrderByPId(long opid) {
+        return orderDao.getOrderByPId(opid);
+    }
 }
