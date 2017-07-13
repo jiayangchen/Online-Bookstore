@@ -13,6 +13,8 @@ public class Book implements Serializable{
     private String bCategory;
     private String bDiscr;
     private String bCover;
+    private int isSold;
+    private int isEnglish;
 
     public Long getBid() {
         return bid;
@@ -76,5 +78,21 @@ public class Book implements Serializable{
 
     public void setbCover(String bCover) {
         this.bCover = bCover;
+    }
+
+    public int getIsSold() {
+        return isSold;
+    }
+
+    public void setIsSold(int isSold) {
+        this.isSold = isSold;
+    }
+
+    public int getIsEnglish() {
+        return isEnglish;
+    }
+
+    public void setIsEnglish(int isEnglish) {
+        this.isEnglish = isEnglish;
     }
 }

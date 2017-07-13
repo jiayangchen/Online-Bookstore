@@ -17,4 +17,8 @@ public interface BookDao {
     void updateBookStock(Long bid,int quan);
     void updateBookCNStock(Long bid, int quan);
 
+    void updateBookCN(Book book);
+    void updateBook(Book book);
+    Book getBookCNByBId(Long bid);
+    Book getBookByBId(Long bid);
 }

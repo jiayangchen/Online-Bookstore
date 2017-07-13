@@ -1,6 +1,8 @@
 package com.heitian.ssm.service;
 
 import com.heitian.ssm.model.Book;
+import com.heitian.ssm.model.Provided;
+
 import java.util.List;
 
 public interface BookService {
@@ -12,4 +14,10 @@ public interface BookService {
 
     void updateBookStock(Long bid, int quan);
     void updateBookCNStock(Long bid, int quan);
+
+    List<Provided> getBookIdByPId(long pid);
+    void updateBookCN(Book book);
+    void updateBook(Book book);
+    Book getBookCNByBId(Long bid);
+    Book getBookByBId(Long bid);
 }

@@ -11,6 +11,8 @@
         <result column="Quantity" property="bQuantity" jdbcType="BIGINT"/>
         <result column="Discr" property="bDiscr" jdbcType="VARCHAR"/>
         <result column="Cover" property="bCover" jdbcType="VARCHAR"/>
+        <result column="isSold" property="isSold" jdbcType="INTEGER"/>
+        <result column="isEnglish" property="isEnglish" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectAllBook" parameterType="com.heitian.ssm.model.Book"
@@ -49,4 +51,29 @@
         WHERE BookID = #{0}
     </update>
 
+    <update id="updateBookCN" parameterType="com.heitian.ssm.model.Book">
+        UPDATE bookcn
+        SET BookName = #{bName},Author = #{bAuthor}, Category = #{bCategory},
+        Price = #{bPrice}, Quantity = #{bQuantity}, Discr = #{bDiscr}
+        WHERE BookID = #{bid}
+    </update>
+
+    <update id="updateBook" parameterType="com.heitian.ssm.model.Book">
+        UPDATE book
+        SET BookName = #{bName},Author = #{bAuthor}, Category = #{bCategory},
+        Price = #{bPrice}, Quantity = #{bQuantity}, Discr = #{bDiscr}
+        WHERE BookID = #{bid}
+    </update>
+
+    <select id="getBookCNByBId" parameterType="java.lang.Long"
+            resultMap="BookBaseMap">
+        SELECT * FROM bookcn
+        WHERE BookID = #{0}
+    </select>
+
+    <select id="getBookByBId" parameterType="java.lang.Long"
+            resultMap="BookBaseMap">
+        SELECT * FROM book
+        WHERE BookID = #{0}
+    </select>
 </mapper>

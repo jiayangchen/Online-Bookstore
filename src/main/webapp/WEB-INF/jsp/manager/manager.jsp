@@ -56,8 +56,12 @@
         <h1>Producer Center</h1>
     </div>
     <nav style="text-align: right">
+        <a class="btn btn-default" href="<c:url value="/orderManagement"/>">Order Management</a>
+        <a class="btn btn-primary" href="<c:url value="/productManagement"/>">Product Management</a>
         <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
     </nav><br>
+
+    <c:if test="${!empty orderList}">
     <p class="lead">Order Managerment</p>
         <div class="row">
             <div class="col-md-12">
@@ -75,7 +79,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:if test="${!empty orderList}">
                     <c:forEach var="order" items="${orderList}">
                     <tr>
                         <td>${order.ocode}</td>
@@ -101,20 +104,20 @@
                         </td>
                         <td>${order.o_amount}</td>
                         <td>
-                            <c:if test="${order.o_status == 1}">
+                            <c:if test="${order.o_status != 2}">
                                 <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success" disabled="disabled">Accept</button>
                             </c:if>
-                            <c:if test="${order.o_status != 1}">
+                            <c:if test="${order.o_status == 2}">
                                 <form action="<c:url value="/acceptOrder"/>" method="post">
                                     <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success">Accept</button>
                                 </form>
                             </c:if>
                         </td>
                         <td>
-                            <c:if test="${order.o_status == 1}">
+                            <c:if test="${order.o_status != 2}">
                                 <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger" disabled="disabled">Refuse</button>
                             </c:if>
-                            <c:if test="${order.o_status != 1}">
+                            <c:if test="${order.o_status == 2}">
                                 <form action="<c:url value="/deleteOrder"/>" method="post">
                                     <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger">Refuse</button>
                                 </form>
@@ -122,83 +125,76 @@
                         </td>
                     </tr>
                     </c:forEach>
-                    </c:if>
-
-                    <c:if test="${empty orderList}">
-                        Empty
-                    </c:if>
                     </tbody>
                 </table>
             </div>
         </div>
+    </c:if>
 
-   <%-- <p class="lead">User Management</p>
-    <form action="<c:url value="/updateUser"/>" method="post">
+    <c:if test="${!empty productList}">
+        <p class="lead">Product Managerment</p>
+        <nav style="text-align: right">
+            <a class="btn btn-default" href="<c:url value="/productManagement?type=zh"/>">中文</a>
+            <a class="btn btn-primary" href="<c:url value="/productManagement?type=en"/>">English</a>
+        </nav><br>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>UserName</th>
-                        <th>Password</th>
-                        <th>Role</th>
-                        <th>Sex</th>
-                        <th>Address</th>
-                        <th>Phone Number</th>
-                        <th>Operation</th>
-                        <th>Operation</th>
+                        <th>Index</th>
+                        <th>Book Name</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>isSold</th>
+                        <th>Save</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:if test="${!empty userList}">
-                        <c:forEach var="user" items="${userList}">
-                            <tr>
-                                <td>${user.uName}</td>
-                                <td>${user.uPassword}</td>
-                                <td>
-                                    <c:if test="${user.rid == 1}">
-                                        <input type="text" name="role" class="form-control" placeholder="User">
-                                    </c:if>
-                                    <c:if test="${user.rid == 2}">
-                                        <input type="text" name="role" class="form-control" placeholder="Admin">
-                                    </c:if>
-                                    <c:if test="${user.rid == 3}">
-                                        <input type="text" name="role" class="form-control" placeholder="Producer">
-                                    </c:if>
-                                </td>
-                                <td>
-                                    <c:if test="${user.sex == 1}">
-                                        Man
-                                    </c:if>
-                                    <c:if test="${user.sex == 0}">
-                                        Woman
-                                    </c:if>
-                                </td>
-                                <td>${user.address}</td>
-                                <td>${user.phone}</td>
-                                <td>
-                                    <button value="${user.uName}" name="updateUser" type="submit" class="btn btn-success">Save</button>
-                                </td>
-                                <td>
-                                    <form action="<c:url value="/deleteUser"/>" method="post">
-                                        <button value="${user.uName}" name="deleteUser" type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:if>
-
-                    <c:if test="${empty userList}">
-                        Empty
-                    </c:if>
+                    <c:forEach var="book" items="${productList}" varStatus="status">
+                    <form action="<c:url value="/updateBook?isEnglish=${book.isEnglish}"/>" method="post">
+                        <tr>
+                            <td>${status.index+1}</td>
+                            <td>
+                                <input type="text" name="bname" class="form-control" placeholder="${book.bName}">
+                            </td>
+                            <td>
+                                <input type="text" name="bauthor" class="form-control" placeholder="${book.bAuthor}">
+                            </td>
+                            <td>
+                                <input type="text" name="bcate" class="form-control" placeholder="${book.bCategory}">
+                            </td>
+                            <td>
+                                <input type="text" name="bquan" class="form-control" placeholder="${book.bQuantity}">
+                            </td>
+                            <td>
+                                <input type="text" name="bprice" class="form-control" placeholder="${book.bPrice}">
+                            </td>
+                            <td>
+                                <input type="text" name="bdescr" class="form-control" placeholder="${book.bDiscr.substring(0,10)}">
+                            </td>
+                            <td>
+                                <c:if test="${book.isSold == 0}">
+                                    <button value="${book.bid}" name="isSold" type="submit" class="btn btn-primary">Market</button>
+                                </c:if>
+                                <c:if test="${book.isSold == 1}">
+                                    <button value="${book.bid}" name="isSold" type="submit" class="btn btn-warning">Withdraw</button>
+                                </c:if>
+                            </td>
+                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-success">Save</button></td>
+                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-danger">Delete</button></td>
+                        </tr>
+                    </form>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
         </div>
-    </form>
-    <nav style="text-align: right">
-        <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
-    </nav><br><br><br>--%>
+    </c:if>
 </div>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

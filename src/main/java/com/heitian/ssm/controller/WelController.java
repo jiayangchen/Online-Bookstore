@@ -81,10 +81,22 @@ public class WelController {
                 {
                     session.setAttribute("role","user");
                     if(session.getAttribute("langType").equals("zh")){
-                        model.addAttribute("bookList", bookListCN);
+                        List<Book> sellBookCNList = new ArrayList<>();
+                        for(Book b : bookListCN){
+                            if(b.getIsSold() == 1){
+                                sellBookCNList.add(b);
+                            }
+                        }
+                        model.addAttribute("bookList", sellBookCNList);
                         return "hello";
                     }else{
-                        model.addAttribute("bookList", bookList);
+                        List<Book> sellBookList = new ArrayList<>();
+                        for(Book b : bookList){
+                            if(b.getIsSold() == 1){
+                                sellBookList.add(b);
+                            }
+                        }
+                        model.addAttribute("bookList", sellBookList);
                         return "hello";
                     }
                 }

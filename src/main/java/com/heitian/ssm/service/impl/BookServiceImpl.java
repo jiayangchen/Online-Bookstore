@@ -1,7 +1,9 @@
 package com.heitian.ssm.service.impl;
 
 import com.heitian.ssm.dao.BookDao;
+import com.heitian.ssm.dao.ProvidedDao;
 import com.heitian.ssm.model.Book;
+import com.heitian.ssm.model.Provided;
 import com.heitian.ssm.service.BookService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.List;
 public class BookServiceImpl implements BookService{
     @Resource
     private BookDao bookDao;
+    @Resource
+    private ProvidedDao providedDao;
 
     @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     //@Cacheable("getAllBook")
@@ -48,4 +52,31 @@ public class BookServiceImpl implements BookService{
     public List<Book> getAllBookCNByCategory(String category) {
         return bookDao.selectAllBookCNByCategory(category);
     }
+
+    @Override
+    public List<Provided> getBookIdByPId(long pid) {
+        return providedDao.selectBIdByPId(pid);
+    }
+
+    @Override
+    public void updateBookCN(Book book) {
+        bookDao.updateBookCN(book);
+    }
+
+    @Override
+    public Book getBookCNByBId(Long bid) {
+        return bookDao.getBookCNByBId(bid);
+    }
+
+    @Override
+    public Book getBookByBId(Long bid) {
+        return bookDao.getBookByBId(bid);
+    }
+
+    @Override
+    public void updateBook(Book book) {
+        bookDao.updateBook(book);
+    }
+
+
 }
