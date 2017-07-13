@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.heitian.ssm.lucene.luceneIndex;
 import com.heitian.ssm.model.Book;
 import com.heitian.ssm.model.Order;
+import com.heitian.ssm.model.OrderItem;
 import com.heitian.ssm.service.BookService;
 import com.heitian.ssm.service.LuceneSearchService;
+import com.heitian.ssm.service.OrderItemService;
 import com.heitian.ssm.service.OrderService;
 import com.heitian.ssm.utils.MyHttpHeader;
 import org.apache.log4j.Logger;
@@ -37,6 +39,8 @@ public class LuceneController {
     private LuceneSearchService luceneSearchService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderItemService orderItemService;
 
     @RequestMapping(value="/luceneSearch")
     public String search(@RequestParam(value="target") String target,
@@ -48,12 +52,16 @@ public class LuceneController {
 
     @RequestMapping(value = "/orderSearch")
     public String orderSearch(@RequestParam(value = "ordersearch",required = false) String ocode,
-                              @RequestParam(value = "submitted",defaultValue = "0",required = false) String submitted,
-                              @RequestParam(value = "paid",defaultValue = "0",required = false) String paid,
+                              @RequestParam(value = "submitted",defaultValue = "-1",required = false) String submitted,
+                              @RequestParam(value = "paid",defaultValue = "-1",required = false) String paid,
+                              @RequestParam(value = "refused",defaultValue = "-1",required = false) String refused,
+                              @RequestParam(value = "accepted",defaultValue = "-1",required = false) String accepted,
+                              @RequestParam(value = "canceled",defaultValue = "-1",required = false) String canceled,
                               Model model,
                               HttpServletRequest request){
 
-        log.info(ocode + " " + submitted + " " + paid);
+        log.info("submitted:" + submitted + " " + "paid:" + paid + " " +
+        "refused:" + refused + " " + "accepted:" + accepted + " " + "canceled:" + canceled);
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("sess_username");
         if(!ocode.isEmpty()){
@@ -62,16 +70,39 @@ public class LuceneController {
             tmp.add(order);
             model.addAttribute("result",tmp);
             return "user/ordersearch";
-        }else if(submitted.equals("1") && paid.equals("0")){
-            List<Order> tmp = orderService.getOrderByStatus(username,1);
-            model.addAttribute("result",tmp);
-            return "user/ordersearch";
-        }else if(submitted.equals("0") && paid.equals("2")){
-            List<Order> tmp = orderService.getOrderByStatus(username,2);
-            model.addAttribute("result",tmp);
-            return "user/ordersearch";
         }else{
+            List<Order> tmp = new ArrayList<>();
+            List<Order> ans = new ArrayList<>();
+            if(submitted.equals("1")){
+                tmp = orderService.getOrderByStatus(username,1);
+                ans.addAll(tmp);
+            }
+            if(paid.equals("2")){
+                tmp = orderService.getOrderByStatus(username,2);
+                ans.addAll(tmp);
+            }
+            if(refused.equals("0")){
+                tmp = orderService.getOrderByStatus(username,0);
+                ans.addAll(tmp);
+            }
+            if(accepted.equals("3")){
+                tmp = orderService.getOrderByStatus(username,3);
+                ans.addAll(tmp);
+            }
+            if(canceled.equals("4")){
+                tmp = orderService.getOrderByStatus(username,4);
+                ans.addAll(tmp);
+            }
+            model.addAttribute("result",ans);
             return "user/ordersearch";
         }
+    }
+
+    @RequestMapping("/viewDetails")
+    public String viewDetails(@RequestParam("ocode") String ocode,Model model){
+        log.info(ocode);
+        List<OrderItem> orderItemsList = orderItemService.selectOrderItemByOCode(ocode);
+        model.addAttribute("result",orderItemsList);
+        return "user/orderdetails";
     }
 }

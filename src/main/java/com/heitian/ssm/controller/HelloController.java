@@ -37,6 +37,19 @@ public class HelloController {
         return "manager/manager";
     }
 
+    @RequestMapping("/cancelOrder")
+    public String cancelOrder(@RequestParam("cancelOrder") String ocode,
+                              HttpServletRequest request,
+                              Model model){
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("sess_username");
+        orderService.updateOrderStatus(ocode,4);
+        User user = userService.getUserByName(username);
+        model.addAttribute("userinfo",user);
+        model.addAttribute("orderhistory",orderService.getOrderByName(username));
+        return "user/usercenter";
+    }
+
     @RequestMapping("/deleteOrder")
     public String deleteOrder(@RequestParam("deleteOrder") String ocode,
                               HttpServletRequest request,

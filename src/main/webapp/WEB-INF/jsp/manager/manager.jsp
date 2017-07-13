@@ -95,6 +95,9 @@
                             <c:if test="${order.o_status == 3}">
                                 <font color="#32CD32"><b>Accepted</b></font>
                             </c:if>
+                            <c:if test="${order.o_status == 4}">
+                                <font color="#969696"><b>Canceled</b></font>
+                            </c:if>
                         </td>
                         <td>${order.o_amount}</td>
                         <td>

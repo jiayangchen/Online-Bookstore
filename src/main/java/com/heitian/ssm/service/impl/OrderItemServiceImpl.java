@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by ChenJiayang on 2017/7/10.
@@ -23,5 +24,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public void addOrderItem(OrderItem orderItem) {
         orderItemDao.addOrderItem(orderItem);
+    }
+
+    @Override
+    public List<OrderItem> selectOrderItemByOCode(String ocode) {
+        return orderItemDao.selectOrderItemByOCode(ocode);
     }
 }

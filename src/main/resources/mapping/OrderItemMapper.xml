@@ -15,4 +15,9 @@
         (#{ot_id},#{o_code},#{ot_bid},#{ot_quantity})
     </insert>
 
+    <select id="selectOrderItemByOCode" resultMap="OrderItemBaseMap">
+        SELECT * FROM t_order_item
+        WHERE
+        o_code = #{0}
+    </select>
 </mapper>

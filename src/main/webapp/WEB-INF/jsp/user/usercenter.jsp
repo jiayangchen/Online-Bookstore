@@ -108,6 +108,24 @@
                     </label>
                 </div>
                 &nbsp;&nbsp;
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="refused" value="0">Refused
+                    </label>
+                </div>
+                &nbsp;&nbsp;
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="accepted" value="3">Accepted
+                    </label>
+                </div>
+                &nbsp;&nbsp;
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="canceled" value="4">Canceled
+                    </label>
+                </div>
+                &nbsp;&nbsp;
                 <button type="submit" class="btn btn-default"><spring:message code="search"/></button>
             </div>
         </div>
@@ -128,7 +146,7 @@
                 </thead>
                 <tbody>
                 <c:if test="${!empty orderhistory}">
-                    <c:forEach var="order" items="${orderhistory}">
+                    <c:forEach var="order" items="${orderhistory}" varStatus="status">
                         <tr>
                             <td>${order.ocode}</td>
                             <td>${order.o_amount}</td>
@@ -143,14 +161,23 @@
                                 <c:if test="${order.o_status == 2}">
                                     <font color="#4876FF"><b>Paid</b></font>
                                 </c:if>
+                                <c:if test="${order.o_status == 3}">
+                                    <font color="#32CD32"><b>Accepted</b></font>
+                                </c:if>
+                                <c:if test="${order.o_status == 4}">
+                                    <font color="#969696"><b>Canceled</b></font>
+                                </c:if>
                             </td>
                             <td>
-                                <input id="ocode" name="ocode" value="${order.ocode}" type="hidden">
-                                <button onclick="ajaxBook()" type="submit" class="btn btn-default btn-book-view">View Details</button>
+                                <form action="<c:url value="/viewDetails"/>" method="post">
+                                <button value="${order.ocode}" name="ocode" type="submit" class="btn btn-default btn-book-view">View Details</button>
+                                </form>
                             </td>
                             <td>
                                 <c:if test="${order.o_status == 1}">
-                                    <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}">Cancel Order</button>
+                                    <form action="<c:url value="/cancelOrder"/>" method="post">
+                                    <button type="submit" name="cancelOrder" class="btn btn-primary btn-order-cancel" value="${order.ocode}">Cancel Order</button>
+                                    </form>
                                 </c:if>
                                 <c:if test="${order.o_status != 1}">
                                     <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
@@ -169,9 +196,6 @@
         </div>
     </div>
     <br>
-
-    <p class="lead">Order Details</p>
-    <div id="bookstore"></div>
 
 </div>
 <br><br><br>

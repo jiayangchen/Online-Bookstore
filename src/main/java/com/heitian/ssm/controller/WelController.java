@@ -213,64 +213,60 @@ public class WelController {
         return new ModelAndView("showCart").addObject("cart", cart.getContens());
     }
 
-    @RequestMapping("/cancelOrder")
-    @ResponseBody
-    public String cancelOrder(@RequestParam("cancelOrderId") String ocode){
-        return ocode;
-    }
-
     @RequestMapping(path="/pay", method= RequestMethod.POST)
     public String pay(CartQuantityList cartList, HttpSession session,
                       Model model) {
 
         logger.info("pay ....");
 
-        String username = (String) session.getAttribute("sess_username");
-        User user = userService.getUserByName(username);
+        synchronized (this) {
+            String username = (String) session.getAttribute("sess_username");
+            User user = userService.getUserByName(username);
 
-        Timestamp d = new Timestamp(System.currentTimeMillis());
+            Timestamp d = new Timestamp(System.currentTimeMillis());
 
-        String orderCode = d.toString() + user.getUid();
+            String orderCode = d.toString() + user.getUid();
 
-        double totalAmount = 0.00;
-        if (cart.getContens() == null) {
-            cart.setContens(new ArrayList<Book>());
-        }
-
-        for (Book book : cart.getContens()) {
-            int buyNum = cartList.fetchWithDefault(book.getBid(), 0);
-            book.setbQuantity(buyNum);
-            if(book.getbQuantity() < buyNum){
-                buyNum = book.getbQuantity();
+            double totalAmount = 0.00;
+            if (cart.getContens() == null) {
+                cart.setContens(new ArrayList<Book>());
             }
-            totalAmount += book.getbPrice() * buyNum;
-            bookService.updateBookStock(book.getBid(),book.getbQuantity() - buyNum);
-            bookService.updateBookCNStock(book.getBid(),book.getbQuantity() - buyNum);
 
-            OrderItem ot = new OrderItem();
-            ot.setO_code(orderCode);
-            ot.setOt_bid(book.getBid());
-            ot.setOt_quantity(buyNum);
-            orderItemService.addOrderItem(ot);
+            for (Book book : cart.getContens()) {
+                int buyNum = cartList.fetchWithDefault(book.getBid(), 0);
+                book.setbQuantity(buyNum);
+                if (book.getbQuantity() < buyNum) {
+                    buyNum = book.getbQuantity();
+                }
+                totalAmount += book.getbPrice() * buyNum;
+                bookService.updateBookStock(book.getBid(), book.getbQuantity() - buyNum);
+                bookService.updateBookCNStock(book.getBid(), book.getbQuantity() - buyNum);
+
+                OrderItem ot = new OrderItem();
+                ot.setO_code(orderCode);
+                ot.setOt_bid(book.getBid());
+                ot.setOt_quantity(buyNum);
+                orderItemService.addOrderItem(ot);
+            }
+
+            Date date = new Date();
+            Timestamp tp = new Timestamp(date.getTime());
+
+            JSONObject orderJSON = new JSONObject();
+            orderJSON.put("ocode", orderCode);
+            orderJSON.put("ouid", user.getUid());
+            orderJSON.put("opid", 0);
+            orderJSON.put("o_create_time", tp);
+            orderJSON.put("o_status", 1); // 已提交
+            orderJSON.put("o_amount", totalAmount);
+            productService.sendMessage(destination, orderJSON.toString());
+
+            model.addAttribute("ordername", username);
+            model.addAttribute("orderaddress", "Shanghai Minhang District DongChuan Rd 800.");
+            model.addAttribute("orderlist", cart.getContens());
+            session.setAttribute("orderCode", orderCode);
+            return "orderProcess";
         }
-
-        Date date = new Date();
-        Timestamp tp = new Timestamp(date.getTime());
-
-        JSONObject orderJSON = new JSONObject();
-        orderJSON.put("ocode",orderCode);
-        orderJSON.put("ouid",user.getUid());
-        orderJSON.put("opid",0);
-        orderJSON.put("o_create_time",tp);
-        orderJSON.put("o_status",1); // 已提交
-        orderJSON.put("o_amount",totalAmount);
-        productService.sendMessage(destination, orderJSON.toString());
-
-        model.addAttribute("ordername",username);
-        model.addAttribute("orderaddress","Shanghai Minhang District DongChuan Rd 800.");
-        model.addAttribute("orderlist",cart.getContens());
-        session.setAttribute("orderCode",orderCode);
-        return "orderProcess";
     }
 
     @RequestMapping("/updateOrderStatus")

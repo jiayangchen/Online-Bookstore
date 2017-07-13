@@ -26,7 +26,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Lucene Search Result</title>
+    <title>Order Details</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -53,7 +53,7 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Search Result</h1>
+        <h1>Order Details</h1>
     </div>
 
     <div class="row">
@@ -62,50 +62,17 @@
                 <thead>
                 <tr>
                     <th>Order Code</th>
-                    <th>Order Price</th>
-                    <th>Order Create Time</th>
-                    <th>Order Status</th>
-                    <th>Order Details</th>
-                    <th>Operation</th>
+                    <th>Book ID</th>
+                    <th>Quantity</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:if test="${!empty result}">
-                    <c:forEach var="order" items="${result}">
+                    <c:forEach var="orderitem" items="${result}">
                         <tr>
-                            <td>${order.ocode}</td>
-                            <td>${order.o_amount}</td>
-                            <td>${order.o_create_time}</td>
-                            <td>
-                                <c:if test="${order.o_status == 0}">
-                                    <font color="#EE2C2C"><b>Refused</b></font>
-                                </c:if>
-                                <c:if test="${order.o_status == 1}">
-                                    <font color="#EEC900"><b>Submitted</b></font>
-                                </c:if>
-                                <c:if test="${order.o_status == 2}">
-                                    <font color="#4876FF"><b>Paid</b></font>
-                                </c:if>
-                                <c:if test="${order.o_status == 3}">
-                                    <font color="#32CD32"><b>Accepted</b></font>
-                                </c:if>
-                                <c:if test="${order.o_status == 4}">
-                                    <font color="#969696"><b>Canceled</b></font>
-                                </c:if>
-                            </td>
-                            <td>
-                                <form action="<c:url value="/viewDetails"/>" method="post">
-                                <button value="${order.ocode}" name="ocode" type="submit" class="btn btn-default">View Details</button>
-                                </form>
-                            </td>
-                            <td>
-                                <c:if test="${order.o_status == 1}">
-                                    <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}">Cancel Order</button>
-                                </c:if>
-                                <c:if test="${order.o_status != 1}">
-                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
-                                </c:if>
-                            </td>
+                            <td>${orderitem.o_code}</td>
+                            <td>${orderitem.ot_bid}</td>
+                            <td>${orderitem.ot_quantity}</td>
                         </tr>
                     </c:forEach>
                 </c:if>
