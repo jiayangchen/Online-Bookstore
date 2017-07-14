@@ -20,7 +20,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Order Processing</title>
+    <title><spring:message code="userCenter"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -48,13 +48,13 @@
 <div class="container">
 
     <div class="page-header">
-        <h1>User Center —— <small>${userinfo.uName}</small></h1>
+        <h1><spring:message code="userCenter"/> —— <small>${userinfo.uName}</small></h1>
     </div>
     <nav style="text-align: right">
-        <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+        <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
     </nav>
 
-    <p class="lead">Personal Information</p>
+    <p class="lead"><spring:message code="personinfo"/></p>
 
     <form action="<c:url value="/updatePerson"/>" method="post">
     <div class="row">
@@ -62,9 +62,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Sex</th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
+                    <th><spring:message code="sex"/></th>
+                    <th><spring:message code="address"/></th>
+                    <th><spring:message code="phone"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,7 +84,7 @@
         </div>
     </div><br>
         <nav style="text-align: right">
-        <button type="submit" class="btn btn-success">Submit Change</button>
+        <button type="submit" class="btn btn-success"><spring:message code="save"/></button>
         </nav>
     </form>
 
@@ -98,31 +98,31 @@
                 &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="submitted" value="1">Submitted
+                        <input type="checkbox" name="submitted" value="1"><spring:message code="submitted"/>
                     </label>
                 </div>
                 &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="paid" value="2">Paid
+                        <input type="checkbox" name="paid" value="2"><spring:message code="paid"/>
                     </label>
                 </div>
                 &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="refused" value="0">Refused
+                        <input type="checkbox" name="refused" value="0"><spring:message code="refused"/>
                     </label>
                 </div>
                 &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="accepted" value="3">Accepted
+                        <input type="checkbox" name="accepted" value="3"><spring:message code="accepted"/>
                     </label>
                 </div>
                 &nbsp;&nbsp;
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="canceled" value="4">Canceled
+                        <input type="checkbox" name="canceled" value="4"><spring:message code="canceled"/>
                     </label>
                 </div>
                 &nbsp;&nbsp;
@@ -136,12 +136,12 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Order Code</th>
-                    <th>Order Price</th>
-                    <th>Order Create Time</th>
-                    <th>Order Status</th>
-                    <th>Order Details</th>
-                    <th>Operation</th>
+                    <th><spring:message code="ordercode"/></th>
+                    <th><spring:message code="orderprice"/></th>
+                    <th><spring:message code="ordertime"/></th>
+                    <th><spring:message code="orderstatus"/></th>
+                    <th><spring:message code="orderdetails"/></th>
+                    <th><spring:message code="operation"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -170,17 +170,17 @@
                             </td>
                             <td>
                                 <form action="<c:url value="/viewDetails"/>" method="post">
-                                <button value="${order.ocode}" name="ocode" type="submit" class="btn btn-default btn-book-view">View Details</button>
+                                <button value="${order.ocode}" name="ocode" type="submit" class="btn btn-default btn-book-view"><spring:message code="viewdetails"/></button>
                                 </form>
                             </td>
                             <td>
                                 <c:if test="${order.o_status == 1}">
                                     <form action="<c:url value="/cancelOrder"/>" method="post">
-                                    <button type="submit" name="cancelOrder" class="btn btn-primary btn-order-cancel" value="${order.ocode}">Cancel Order</button>
+                                    <button type="submit" name="cancelOrder" class="btn btn-primary btn-order-cancel" value="${order.ocode}"><spring:message code="cancelOrder"/></button>
                                     </form>
                                 </c:if>
                                 <c:if test="${order.o_status != 1}">
-                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
+                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}"><spring:message code="cancelOrder"/></button>
                                 </c:if>
                             </td>
                         </tr>

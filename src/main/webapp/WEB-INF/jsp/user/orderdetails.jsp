@@ -15,6 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -53,7 +54,7 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Order Details</h1>
+        <h1><spring:message code="viewdetails"/></h1>
     </div>
 
     <div class="row">
@@ -61,9 +62,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Order Code</th>
-                    <th>Book ID</th>
-                    <th>Quantity</th>
+                    <th><spring:message code="ordercode"/></th>
+                    <th><spring:message code="bookid"/></th>
+                    <th><spring:message code="bookquan"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,7 +86,7 @@
         </div>
     </div>
     <nav style="text-align: right">
-        <a class="btn btn-warning" href="<c:url value="/userCenter"/>">Back To UserCenter</a>
+        <a class="btn btn-warning" href="<c:url value="/userCenter"/>"><spring:message code="back"/></a>
     </nav><br><br>
 </div>
 

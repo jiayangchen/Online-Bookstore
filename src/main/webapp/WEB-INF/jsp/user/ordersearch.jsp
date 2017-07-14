@@ -15,6 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -53,7 +54,7 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Search Result</h1>
+        <h1><spring:message code="searchtitle"/></h1>
     </div>
 
     <div class="row">
@@ -61,12 +62,12 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Order Code</th>
-                    <th>Order Price</th>
-                    <th>Order Create Time</th>
-                    <th>Order Status</th>
-                    <th>Order Details</th>
-                    <th>Operation</th>
+                    <th><spring:message code="ordercode"/></th>
+                    <th><spring:message code="orderprice"/></th>
+                    <th><spring:message code="ordertime"/></th>
+                    <th><spring:message code="orderstatus"/></th>
+                    <th><spring:message code="viewdetails"/></th>
+                    <th><spring:message code="operation"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -78,32 +79,32 @@
                             <td>${order.o_create_time}</td>
                             <td>
                                 <c:if test="${order.o_status == 0}">
-                                    <font color="#EE2C2C"><b>Refused</b></font>
+                                    <font color="#EE2C2C"><b><spring:message code="refused"/></b></font>
                                 </c:if>
                                 <c:if test="${order.o_status == 1}">
-                                    <font color="#EEC900"><b>Submitted</b></font>
+                                    <font color="#EEC900"><b><spring:message code="submitted"/></b></font>
                                 </c:if>
                                 <c:if test="${order.o_status == 2}">
-                                    <font color="#4876FF"><b>Paid</b></font>
+                                    <font color="#4876FF"><b><spring:message code="paid"/></b></font>
                                 </c:if>
                                 <c:if test="${order.o_status == 3}">
-                                    <font color="#32CD32"><b>Accepted</b></font>
+                                    <font color="#32CD32"><b><spring:message code="accepted"/></b></font>
                                 </c:if>
                                 <c:if test="${order.o_status == 4}">
-                                    <font color="#969696"><b>Canceled</b></font>
+                                    <font color="#969696"><b><spring:message code="canceled"/></b></font>
                                 </c:if>
                             </td>
                             <td>
                                 <form action="<c:url value="/viewDetails"/>" method="post">
-                                <button value="${order.ocode}" name="ocode" type="submit" class="btn btn-default">View Details</button>
+                                <button value="${order.ocode}" name="ocode" type="submit" class="btn btn-default"><spring:message code="viewdetails"/></button>
                                 </form>
                             </td>
                             <td>
                                 <c:if test="${order.o_status == 1}">
-                                    <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}">Cancel Order</button>
+                                    <button type="submit" class="btn btn-primary btn-order-cancel" data-bid="${order.ocode}"><spring:message code="cancelOrder"/></button>
                                 </c:if>
                                 <c:if test="${order.o_status != 1}">
-                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}">Cancel Order</button>
+                                    <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}"><spring:message code="cancelOrder"/></button>
                                 </c:if>
                             </td>
                         </tr>
@@ -118,7 +119,7 @@
         </div>
     </div>
     <nav style="text-align: right">
-        <a class="btn btn-warning" href="<c:url value="/userCenter"/>">Back To UserCenter</a>
+        <a class="btn btn-warning" href="<c:url value="/userCenter"/>"><spring:message code="back"/></a>
     </nav><br><br>
 </div>
 

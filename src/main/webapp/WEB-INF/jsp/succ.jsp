@@ -15,6 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -26,7 +27,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Lucene Search Result</title>
+    <title><spring:message code="search"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -53,7 +54,7 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Search Result</h1>
+        <h1><spring:message code="searchtitle"/></h1>
     </div>
 
     <div class="row">
@@ -61,10 +62,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>BookID</th>
-                    <th>BookName</th>
-                    <th>BookAuthor</th>
-                    <th>Description</th>
+                    <th><spring:message code="bookid"/></th>
+                    <th><spring:message code="bookname"/></th>
+                    <th><spring:message code="bookauthor"/></th>
+                    <th><spring:message code="bookdescr"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,7 +88,7 @@
         </div>
     </div>
     <nav style="text-align: right">
-    <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+    <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
     </nav><br><br>
 </div>
 

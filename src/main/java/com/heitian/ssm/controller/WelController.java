@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.heitian.ssm.model.*;
 import com.heitian.ssm.service.*;
 import com.heitian.ssm.utils.DecriptUtil;
+import org.apache.cxf.transport.http.Cookies;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -54,7 +57,7 @@ public class WelController {
                           @RequestParam(value="password") String password,
                           HttpServletRequest request,
                           Model model){
-        //SecurityUtils.getSubject().logout();
+
         logger.info(request.getSession().getAttribute("langType"));
         HttpSession session = request.getSession();
         Subject currentUser = SecurityUtils.getSubject();
@@ -277,6 +280,7 @@ public class WelController {
             model.addAttribute("orderaddress", "Shanghai Minhang District DongChuan Rd 800.");
             model.addAttribute("orderlist", cart.getContens());
             session.setAttribute("orderCode", orderCode);
+            model.addAttribute("orderCode",orderCode);
             return "orderProcess";
         }
     }
@@ -351,15 +355,5 @@ public class WelController {
             model.addAttribute("bookList", bookList);
             return "hello";
         }
-    }
-
-    @RequestMapping("/chatroom")
-    public String chatroom(){
-        return "chatroom";
-    }
-
-    @RequestMapping("/chat")
-    public String chat(){
-        return "chat";
     }
 }

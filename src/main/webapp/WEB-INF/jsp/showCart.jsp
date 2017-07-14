@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -19,7 +20,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Sticky Footer Template for Bootstrap</title>
+    <title><spring:message code="shoppingcart"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +50,7 @@
     <div class="page-header">
         <h1><%
             HttpSession s = request.getSession();
-        %><%=s.getAttribute("sess_username")%>'s Shopping Cart</h1>
+        %><%=s.getAttribute("sess_username")%><spring:message code="carthello"/></h1>
     </div>
 
     <form action="<c:url value="/pay"/>" method="post">
@@ -59,11 +60,11 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Author</th>
-                    <th>storage</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th><spring:message code="bookname"/></th>
+                    <th><spring:message code="bookauthor"/></th>
+                    <th><spring:message code="bookstock"/></th>
+                    <th><spring:message code="bookprice"/></th>
+                    <th><spring:message code="bookquan"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -93,9 +94,9 @@
         <br><br><br>
         <nav style="text-align: right">
         <div id="navbar" class="navbar-collapse collapse">
-            <button class="btn btn-success">Submit Order</button>
-            <a class="btn btn-danger" href="<c:url value="/resetCart"/>">Reset Cart</a>
-            <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+            <button class="btn btn-success"><spring:message code="submitcart"/></button>
+            <a class="btn btn-danger" href="<c:url value="/resetCart"/>"><spring:message code="resetcart"/></a>
+            <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
         </div>
         </nav>
     </form>

@@ -15,7 +15,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>书店首页</title>
+    <title><spring:message code="mainpage"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -117,9 +117,7 @@
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 herobanner_content">
                 <div class="col-md-6">
-                    <h1>Welcome to Online Bookstore</h1>
-                    <p>OKR, weekly check-ins and daily stand-ups to help you build and maintain engaged, aligned and productive teams no matter where they are.</p>
-
+                    <h1><spring:message code="welcome"/></h1>
                 </div>
                 <div class="col-md-6">
                     <img class="img-responsive" src="https://www.newsteer.com/images/herobanner-new.png" alt="One on One Check-ins to know the pulse and engagement of your team">
@@ -185,13 +183,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Book Info</h4>
+                <h4 class="modal-title" id="myModalLabel"><spring:message code="bookinfo"/></h4>
             </div>
             <div class="modal-body">
                 ...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="close"/></button>
             </div>
         </div>
     </div>

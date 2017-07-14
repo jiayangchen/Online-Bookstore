@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -19,7 +20,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Order Processing</title>
+    <title><spring:message code="orderprocess"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -45,10 +46,10 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Order Details <small>Please confirm the order information</small></h1>
+        <h1><spring:message code="orderdetails"/> <small><spring:message code="orderconfirm"/></small></h1>
     </div>
-    <p class="lead">Order Code：${orderCode}</p>
-    <p class="lead">Name：${ordername} Address: ${orderaddress}</p>
+    <p class="lead"><spring:message code="ordercode"/>：${orderCode}</p>
+    <p class="lead"><spring:message code="buyername"/>：${ordername} <spring:message code="buyeraddr"/>: ${orderaddress}</p>
 
     <br>
 
@@ -57,9 +58,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>BookName</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th><spring:message code="bookname"/></th>
+                    <th><spring:message code="bookprice"/></th>
+                    <th><spring:message code="bookquan"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,8 +83,8 @@
     </div>
     <br><br><br>
     <nav style="text-align: right">
-    <a class="btn btn-primary" href="<c:url value="/updateOrderStatus"/>">Pay For it</a>
-    <a class="btn btn-warning" href="<c:url value="/back"/>">Back To MainPage</a>
+    <a class="btn btn-primary" href="<c:url value="/updateOrderStatus"/>"><spring:message code="pay"/></a>
+    <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
     </nav>
 </div>
 

@@ -15,6 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -53,29 +54,29 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Producer Center</h1>
+        <h1><spring:message code="procenter"/></h1>
     </div>
     <nav style="text-align: right">
-        <a class="btn btn-default" href="<c:url value="/orderManagement"/>">Order Management</a>
-        <a class="btn btn-primary" href="<c:url value="/productManagement"/>">Product Management</a>
-        <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
+        <a class="btn btn-default" href="<c:url value="/orderManagement"/>"><spring:message code="ordermanage"/></a>
+        <a class="btn btn-primary" href="<c:url value="/productManagement"/>"><spring:message code="promanage"/></a>
+        <a class="btn btn-warning" href="<c:url value="/logout"/>"><spring:message code="logout"/></a>
     </nav><br>
 
     <c:if test="${!empty orderList}">
-    <p class="lead">Order Managerment</p>
+    <p class="lead"><spring:message code="ordermanage"/></p>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Order Code</th>
-                        <th>User Id</th>
-                        <th>Producer Id</th>
-                        <th>Create Time</th>
-                        <th>Status</th>
-                        <th>Price</th>
-                        <th>Accept</th>
-                        <th>Refuse</th>
+                        <th><spring:message code="ordercode"/></th>
+                        <th><spring:message code="userid"/></th>
+                        <th><spring:message code="proid"/></th>
+                        <th><spring:message code="ordertime"/></th>
+                        <th><spring:message code="orderstatus"/></th>
+                        <th><spring:message code="orderprice"/></th>
+                        <th><spring:message code="operation"/></th>
+                        <th><spring:message code="operation"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -87,39 +88,39 @@
                         <td>${order.o_create_time}</td>
                         <td>
                             <c:if test="${order.o_status == 0}">
-                                <font color="#EE2C2C"><b>Refused</b></font>
+                                <font color="#EE2C2C"><b><spring:message code="refused"/></b></font>
                             </c:if>
                             <c:if test="${order.o_status == 1}">
-                                <font color="#EEC900"><b>Submitted</b></font>
+                                <font color="#EEC900"><b><spring:message code="submitted"/></b></font>
                             </c:if>
                             <c:if test="${order.o_status == 2}">
-                                <font color="#4876FF"><b>Paid</b></font>
+                                <font color="#4876FF"><b><spring:message code="paid"/></b></font>
                             </c:if>
                             <c:if test="${order.o_status == 3}">
-                                <font color="#32CD32"><b>Accepted</b></font>
+                                <font color="#32CD32"><b><spring:message code="accepted"/></b></font>
                             </c:if>
                             <c:if test="${order.o_status == 4}">
-                                <font color="#969696"><b>Canceled</b></font>
+                                <font color="#969696"><b><spring:message code="canceled"/></b></font>
                             </c:if>
                         </td>
                         <td>${order.o_amount}</td>
                         <td>
                             <c:if test="${order.o_status != 2}">
-                                <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success" disabled="disabled">Accept</button>
+                                <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success" disabled="disabled"><spring:message code="accept"/></button>
                             </c:if>
                             <c:if test="${order.o_status == 2}">
                                 <form action="<c:url value="/acceptOrder"/>" method="post">
-                                    <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success">Accept</button>
+                                    <button value="${order.ocode}" name="acceptOrder" type="submit" class="btn btn-success"><spring:message code="accept"/></button>
                                 </form>
                             </c:if>
                         </td>
                         <td>
                             <c:if test="${order.o_status != 2}">
-                                <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger" disabled="disabled">Refuse</button>
+                                <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger" disabled="disabled"><spring:message code="refuse"/></button>
                             </c:if>
                             <c:if test="${order.o_status == 2}">
                                 <form action="<c:url value="/deleteOrder"/>" method="post">
-                                    <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger">Refuse</button>
+                                    <button value="${order.ocode}" name="deleteOrder" type="submit" class="btn btn-danger"><spring:message code="refuse"/></button>
                                 </form>
                             </c:if>
                         </td>
@@ -132,7 +133,7 @@
     </c:if>
 
     <c:if test="${!empty productList}">
-        <p class="lead">Product Managerment</p>
+        <p class="lead"><spring:message code="promanage"/></p>
         <nav style="text-align: right">
             <a class="btn btn-default" href="<c:url value="/productManagement?type=zh"/>">中文</a>
             <a class="btn btn-primary" href="<c:url value="/productManagement?type=en"/>">English</a>
@@ -143,15 +144,15 @@
                     <thead>
                     <tr>
                         <th>Index</th>
-                        <th>Book Name</th>
-                        <th>Author</th>
-                        <th>Category</th>
-                        <th>Stock</th>
-                        <th>Price</th>
-                        <th>Description</th>
-                        <th>isSold</th>
-                        <th>Save</th>
-                        <th>Delete</th>
+                        <th><spring:message code="bookname"/></th>
+                        <th><spring:message code="bookauthor"/></th>
+                        <th><spring:message code="category"/></th>
+                        <th><spring:message code="bookstock"/></th>
+                        <th><spring:message code="bookprice"/></th>
+                        <th><spring:message code="bookdescr"/></th>
+                        <th><spring:message code="bookstatus"/></th>
+                        <th><spring:message code="operation"/></th>
+                        <th><spring:message code="operation"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -179,7 +180,7 @@
                             </td>
                             <td>
                                 <c:if test="${book.isSold == 0}">
-                                    <button value="${book.bid}" name="isSold" type="submit" class="btn btn-primary">Market</button>
+                                    <button value="${book.bid}" name="isSold" type="submit" class="btn btn-primary"><spring:message code="market"/></button>
                                 </c:if>
                                 <c:if test="${book.isSold == 1}">
                                     <button value="${book.bid}" name="isSold" type="submit" class="btn btn-warning">Withdraw</button>
