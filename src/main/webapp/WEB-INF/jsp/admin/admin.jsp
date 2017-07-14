@@ -15,6 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -26,7 +27,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>User Information</title>
+    <title><spring:message code="admincenter"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -53,64 +54,64 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Admin Center</h1>
+        <h1><spring:message code="admincenter"/></h1>
     </div>
     <nav style="text-align: right">
-        <a class="btn btn-warning" href="<c:url value="/logout"/>">Logout</a>
+        <a class="btn btn-warning" href="<c:url value="/logout"/>"><spring:message code="logout"/></a>
     </nav><br>
-    <p class="lead">Add User</p>
+    <p class="lead"><spring:message code="adduser"/></p>
     <form action="<c:url value="/addUser"/>" method="post">
     <div class="row">
         <div class="col-md-12">
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>UserName</th>
-                    <th>Password</th>
-                    <th>Role</th>
-                    <th>Sex</th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
+                    <th><spring:message code="uname"/></th>
+                    <th><spring:message code="pass"/></th>
+                    <th><spring:message code="role"/></th>
+                    <th><spring:message code="sex"/></th>
+                    <th><spring:message code="address"/></th>
+                    <th><spring:message code="phone"/></th>
                 </tr>
                 </thead>
                 <tbody>
                         <tr>
-                            <td><input type="text" name="name" class="form-control" placeholder="Name"></td>
-                            <td><input type="text" name="password" class="form-control" placeholder="Password"></td>
+                            <td><input type="text" name="name" class="form-control" placeholder="<spring:message code="uname"/>"></td>
+                            <td><input type="text" name="password" class="form-control" placeholder="<spring:message code="pass"/>"></td>
                             <td>
-                                <input type="text" name="role" class="form-control" placeholder="Role">
+                                <input type="text" name="role" class="form-control" placeholder="<spring:message code="role"/>">
                             </td>
                             <td>
-                                <input type="text" name="sex" class="form-control" placeholder="Sex">
+                                <input type="text" name="sex" class="form-control" placeholder="<spring:message code="sex"/>">
                             </td>
-                            <td><input type="text" name="address" class="form-control" placeholder="Address"></td>
-                            <td><input type="text" name="phone" class="form-control" placeholder="Phone"></td>
+                            <td><input type="text" name="address" class="form-control" placeholder="<spring:message code="address"/>"></td>
+                            <td><input type="text" name="phone" class="form-control" placeholder="<spring:message code="phone"/>"></td>
                         </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <nav style="text-align: right">
-        <button type="submit" class="btn btn-primary">Add User</button>
+        <button type="submit" class="btn btn-primary"><spring:message code="adduser"/></button>
     </nav>
     </form>
 
 
-    <p class="lead">User Management</p>
+    <p class="lead"><spring:message code="usermana"/></p>
     <form action="<c:url value="/updateUser"/>" method="post">
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>UserName</th>
-                        <th>Password</th>
-                        <th>Role</th>
-                        <th>Sex</th>
-                        <th>Address</th>
-                        <th>Phone Number</th>
-                        <th>Operation</th>
-                        <th>Operation</th>
+                        <th><spring:message code="uname"/></th>
+                        <th><spring:message code="pass"/></th>
+                        <th><spring:message code="role"/></th>
+                        <th><spring:message code="sex"/></th>
+                        <th><spring:message code="address"/></th>
+                        <th><spring:message code="phone"/></th>
+                        <th><spring:message code="operation"/></th>
+                        <th><spring:message code="operation"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -121,7 +122,7 @@
                                 <td>${user.uPassword}</td>
                                 <td>
                                     <c:if test="${user.rid == 1}">
-                                    <input type="text" name="role" class="form-control" placeholder="User">
+                                        <input type="text" name="role" class="form-control" placeholder="User">
                                     </c:if>
                                     <c:if test="${user.rid == 2}">
                                         <input type="text" name="role" class="form-control" placeholder="Admin">
@@ -132,20 +133,20 @@
                                 </td>
                                 <td>
                                     <c:if test="${user.sex == 1}">
-                                        Man
+                                        <spring:message code="man"/>
                                     </c:if>
                                     <c:if test="${user.sex == 0}">
-                                        Woman
+                                        <spring:message code="woman"/>
                                     </c:if>
                                 </td>
                                 <td>${user.address}</td>
                                 <td>${user.phone}</td>
                                 <td>
-                                    <button value="${user.uName}" name="updateUser" type="submit" class="btn btn-success">Save</button>
+                                    <button value="${user.uName}" name="updateUser" type="submit" class="btn btn-success"><spring:message code="save"/></button>
                                 </td>
                                 <td>
                                     <form action="<c:url value="/deleteUser"/>" method="post">
-                                    <button value="${user.uName}" name="deleteUser" type="submit" class="btn btn-danger">Delete</button>
+                                    <button value="${user.uName}" name="deleteUser" type="submit" class="btn btn-danger"><spring:message code="delete"/></button>
                                     </form>
                                 </td>
                             </tr>

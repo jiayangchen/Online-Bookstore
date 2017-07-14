@@ -117,7 +117,8 @@
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 herobanner_content">
                 <div class="col-md-6">
-                    <h1><spring:message code="welcome"/></h1>
+                    <h1><spring:message code="welcome"/></h1><br>
+                    <p><spring:message code="main"/></p>
                 </div>
                 <div class="col-md-6">
                     <img class="img-responsive" src="https://www.newsteer.com/images/herobanner-new.png" alt="One on One Check-ins to know the pulse and engagement of your team">

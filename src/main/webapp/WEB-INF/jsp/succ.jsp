@@ -59,7 +59,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table">
+            <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th><spring:message code="bookid"/></th>

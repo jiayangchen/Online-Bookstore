@@ -183,11 +183,11 @@
                                     <button value="${book.bid}" name="isSold" type="submit" class="btn btn-primary"><spring:message code="market"/></button>
                                 </c:if>
                                 <c:if test="${book.isSold == 1}">
-                                    <button value="${book.bid}" name="isSold" type="submit" class="btn btn-warning">Withdraw</button>
+                                    <button value="${book.bid}" name="isSold" type="submit" class="btn btn-warning"><spring:message code="nomarket"/></button>
                                 </c:if>
                             </td>
-                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-success">Save</button></td>
-                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-danger">Delete</button></td>
+                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-success"><spring:message code="save"/></button></td>
+                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-danger"><spring:message code="delete"/></button></td>
                         </tr>
                     </form>
                     </c:forEach>

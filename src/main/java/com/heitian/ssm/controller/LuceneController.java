@@ -44,10 +44,18 @@ public class LuceneController {
 
     @RequestMapping(value="/luceneSearch")
     public String search(@RequestParam(value="target") String target,
-                                            Model model) throws Exception {
-        List<Book> target_booklist = luceneSearchService.luceneSearch(target);
-        model.addAttribute("target_booklist",target_booklist);
-        return "succ";
+                         HttpServletRequest request,
+                         Model model) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("langType").equals("zh")){
+            List<Book> target_booklist = luceneSearchService.luceneSearchCN(target);
+            model.addAttribute("target_booklist",target_booklist);
+            return "succ";
+        }else{
+            List<Book> target_booklist = luceneSearchService.luceneSearch(target);
+            model.addAttribute("target_booklist",target_booklist);
+            return "succ";
+        }
     }
 
     @RequestMapping(value = "/orderSearch")

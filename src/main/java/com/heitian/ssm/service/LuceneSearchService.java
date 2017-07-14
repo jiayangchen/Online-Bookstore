@@ -12,4 +12,5 @@ import java.util.List;
 @Service
 public interface LuceneSearchService {
     List<Book> luceneSearch(String tar) throws Exception;
+    List<Book> luceneSearchCN(String tar) throws Exception;
 }

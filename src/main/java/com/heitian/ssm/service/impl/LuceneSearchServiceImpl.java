@@ -21,9 +21,15 @@ public class LuceneSearchServiceImpl implements LuceneSearchService{
     private BookService bookService;
 
     @Override
-    @Cacheable("getAllBook")
+    //@Cacheable("getAllBook")
     public List<Book> luceneSearch(String tar) throws Exception {
         List<Book> bookList = bookService.getAllBook();
+        luceneIndex luceneIndex = new luceneIndex(bookList);
+        return luceneIndex.search(tar);
+    }
+
+    public List<Book> luceneSearchCN(String tar) throws Exception {
+        List<Book> bookList = bookService.getAllBookCN();
         luceneIndex luceneIndex = new luceneIndex(bookList);
         return luceneIndex.search(tar);
     }

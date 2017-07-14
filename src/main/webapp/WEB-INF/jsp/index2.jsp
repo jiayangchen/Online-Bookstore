@@ -55,16 +55,18 @@
 </nav>
 
 <div class="container">
-
-    <form class="form-signin" action="<c:url value="/welcome"/>" method="post">
-        <h2 class="form-signin-heading"><spring:message code="greet"/></h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="text" name="username" id="inputEmail" class="form-control" placeholder="<spring:message code="email"/>" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="<spring:message code="password"/>" required>
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="login"/></button>
-    </form>
+    <center>
+        <h3>请登录</h3>
+        <form class="form-signin" action="<c:url value="/welcome"/>" method="post">
+            <h2 class="form-signin-heading"><spring:message code="greet"/></h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input style="width:300px;" type="text" name="username" id="inputEmail" class="form-control" placeholder="<spring:message code="email"/>" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input style="width:300px;" type="password" name="password" id="inputPassword" class="form-control" placeholder="<spring:message code="password"/>" required>
+            <br>
+            <button style="width:300px;" class="btn btn-primary btn-block" type="submit"><spring:message code="login"/></button>
+        </form>
+    </center>
     <%--<form action="<c:url value="/logout"/>" method="post">
         <button class="btn btn-lg btn-danger btn-block" type="submit"><spring:message code="reset"/></button>
     </form>--%>
