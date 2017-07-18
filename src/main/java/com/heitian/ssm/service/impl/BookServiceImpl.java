@@ -3,14 +3,18 @@ package com.heitian.ssm.service.impl;
 import com.heitian.ssm.dao.BookDao;
 import com.heitian.ssm.dao.ProvidedDao;
 import com.heitian.ssm.model.Book;
+import com.heitian.ssm.model.Page;
 import com.heitian.ssm.model.Provided;
 import com.heitian.ssm.service.BookService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,5 +82,29 @@ public class BookServiceImpl implements BookService{
         bookDao.updateBook(book);
     }
 
+    @Override
+    public void showBookByPage (HttpServletRequest request, Model model, String langType) {
+        String pageNow = request.getParameter("pageNow");
+        Page page = null;
+        List<Book> products = new ArrayList<>();
+        int totalCount = (int) bookDao.getProductsCount();
+        if (pageNow != null) {
+            page = new Page(totalCount, Integer.parseInt(pageNow));
+            if(langType.equals("zh")) {
+                products = this.bookDao.selectBookCNByPage(page.getStartPos(), page.getPageSize());
+            } else {
+                products = this.bookDao.selectBookByPage(page.getStartPos(), page.getPageSize());
+            }
+        } else {
+            page = new Page(totalCount, 1);
+            if(langType.equals("zh")) {
+                products = this.bookDao.selectBookCNByPage(page.getStartPos(), page.getPageSize());
+            } else {
+                products = this.bookDao.selectBookByPage(page.getStartPos(), page.getPageSize());
+            }
+        }
 
+        model.addAttribute("bookList", products);
+        model.addAttribute("page", page);
+    }
 }

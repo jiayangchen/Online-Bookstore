@@ -102,7 +102,7 @@ public class WelController {
                                 sellBookCNList.add(b);
                             }
                         }
-                        model.addAttribute("bookList", sellBookCNList);
+                        model.addAttribute("bookList", sellBookCNList.subList(0, sellBookCNList.size() >= 6 ? 6 : sellBookCNList.size()));
                         return "hello";
                     }else{
                         List<Book> sellBookList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class WelController {
                                 sellBookList.add(b);
                             }
                         }
-                        model.addAttribute("bookList", sellBookList);
+                        model.addAttribute("bookList", sellBookList.subList(0,sellBookList.size() >= 6 ? 6 : sellBookList.size()));
                         return "hello";
                     }
                 }
@@ -137,6 +137,13 @@ public class WelController {
             }
         }
         return "refuse";
+    }
+
+    @RequestMapping(value = "/myProductPage", method = RequestMethod.GET)
+    public String showMyProduct(HttpServletRequest request, Model model) {
+        String langType = (String) request.getSession().getAttribute("langType");
+        this.bookService.showBookByPage(request, model,langType);
+        return "hello";
     }
 
     @RequestMapping("/logout")

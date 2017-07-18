@@ -61,7 +61,7 @@
     <update id="updateBook" parameterType="com.heitian.ssm.model.Book">
         UPDATE book
         SET BookName = #{bName},Author = #{bAuthor}, Category = #{bCategory},
-        Price = #{bPrice}, Quantity = #{bQuantity}, Discr = #{bDiscr}
+        Price = #{bPrice}, Quantity = #{bQuantity}, Discr = #{bDiscr}, isSold = #{isSold},isEnglish = #{isEnglish}
         WHERE BookID = #{bid}
     </update>
 
@@ -75,5 +75,19 @@
             resultMap="BookBaseMap">
         SELECT * FROM book
         WHERE BookID = #{0}
+    </select>
+
+    <select id="selectBookByPage" resultMap="BookBaseMap">
+        select * FROM book
+        WHERE isSold = 1 limit #{0},#{1}
+    </select>
+
+    <select id="selectBookCNByPage" resultMap="BookBaseMap">
+        select * FROM bookcn
+        WHERE isSold = 1 limit #{0},#{1}
+    </select>
+
+    <select id="getProductsCount" resultType="long">
+        SELECT COUNT(*) FROM book WHERE isSold = 1
     </select>
 </mapper>

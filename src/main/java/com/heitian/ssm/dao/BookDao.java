@@ -19,6 +19,12 @@ public interface BookDao {
 
     void updateBookCN(Book book);
     void updateBook(Book book);
+
     Book getBookCNByBId(Long bid);
     Book getBookByBId(Long bid);
+
+    List<Book> selectBookByPage(int startPos, int pageSize);
+    List<Book> selectBookCNByPage(int startPos, int pageSize);
+
+    long getProductsCount();
 }

@@ -122,9 +122,13 @@ public class HelloController {
         return null;
     }
 
-    @RequestMapping(value = "/putOnMarket", method= RequestMethod.POST)
-    public String putOnMarket(@RequestParam("isSold") Long id){
-        return null;
+    @RequestMapping("/putOnMarket")
+    public String putOnMarket(@RequestParam("bid") Long id){
+        log.info(id);
+        Book book = bookService.getBookCNByBId(id);
+        book.setIsSold(1);
+        bookService.updateBookCN(book);
+        return "forward:/productManagement?type=zh";
     }
 
     @RequestMapping(value = "/updateBook",method= RequestMethod.POST)
