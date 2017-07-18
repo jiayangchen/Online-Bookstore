@@ -103,6 +103,7 @@ public class HelloController {
                 }
             }
             model.addAttribute("productList",ret);
+            model.addAttribute("langType","zh");
             return "manager/manager";
         }else if(type.equals("en")){
             List<Book>bookList = bookService.getAllBook();
@@ -115,8 +116,14 @@ public class HelloController {
                 }
             }
             model.addAttribute("productList",ret);
+            model.addAttribute("langType","en");
             return "manager/manager";
         }
+        return null;
+    }
+
+    @RequestMapping(value = "/putOnMarket", method= RequestMethod.POST)
+    public String putOnMarket(@RequestParam("isSold") Long id){
         return null;
     }
 
@@ -128,10 +135,13 @@ public class HelloController {
                              @RequestParam(value = "bquan",defaultValue = "empty") String bquan,
                              @RequestParam(value = "bprice",defaultValue = "empty") String bprice,
                              @RequestParam(value = "bdescr",defaultValue = "empty") String bdescr,
-                             @RequestParam("isEnglish") int isEnglish,
+                             @RequestParam(value = "isEnglish",defaultValue = "zh") String isEnglish,
                              Model model){
+
+        log.info(bid + " " + bquan);
+
         Book book;
-        if(isEnglish == 0){
+        if(isEnglish.equals("zh")){
             book = bookService.getBookCNByBId(Long.valueOf(bid));
         }else{
             book = bookService.getBookByBId(Long.valueOf(bid));
@@ -144,7 +154,7 @@ public class HelloController {
         book.setbPrice(bprice.isEmpty() ? book.getbPrice() : Double.valueOf(bprice));
         book.setbDiscr(bdescr.isEmpty() ? book.getbDiscr() : bdescr);
 
-        if(isEnglish == 0){
+        if(isEnglish.equals("zh")){
             bookService.updateBookCN(book);
             return "forward:/productManagement?type=zh";
         }else{

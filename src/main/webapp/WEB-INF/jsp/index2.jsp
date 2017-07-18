@@ -65,16 +65,10 @@
             <input style="width:300px;" type="password" name="password" id="inputPassword" class="form-control" placeholder="<spring:message code="password"/>" required>
             <br>
             <button style="width:300px;" class="btn btn-primary btn-block" type="submit"><spring:message code="login"/></button>
+            <br>
+            <p>${error_msg}</p>
         </form>
     </center>
-    <%--<form action="<c:url value="/logout"/>" method="post">
-        <button class="btn btn-lg btn-danger btn-block" type="submit"><spring:message code="reset"/></button>
-    </form>--%>
-
-    <%--<form action="<c:url value="/testJms"/>" method="post">
-        <button class="btn btn-lg btn-danger btn-block" type="submit">Jms</button>
-    </form>--%>
-
 </div> <!-- /container -->
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

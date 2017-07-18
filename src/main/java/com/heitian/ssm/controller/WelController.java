@@ -61,6 +61,18 @@ public class WelController {
         logger.info(request.getSession().getAttribute("langType"));
         HttpSession session = request.getSession();
         Subject currentUser = SecurityUtils.getSubject();
+        if(password.contains("'") ||
+                password.contains("\"") ||
+                password.isEmpty()) {
+
+            if(request.getSession().getAttribute("langType").equals("zh")) {
+                model.addAttribute("error_msg", "The password cannot contain apostrophe or double quotes");
+                return "index2";
+            }else{
+                model.addAttribute("error_msg", "The password cannot contain apostrophe or double quotes");
+                return "index2";
+            }
+        }
         if(!currentUser.isAuthenticated()){
             UsernamePasswordToken upToken = new UsernamePasswordToken(username, DecriptUtil.MD5(password));
             upToken.setRememberMe(false);
