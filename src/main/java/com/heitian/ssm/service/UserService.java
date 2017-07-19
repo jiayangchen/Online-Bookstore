@@ -1,5 +1,6 @@
 package com.heitian.ssm.service;
 
+import com.heitian.ssm.model.Amount;
 import com.heitian.ssm.model.User;
 
 import javax.ejb.Remote;
@@ -11,4 +12,5 @@ public interface UserService {
     User getUserByName(String userName);
     void updateUser(User user);
     void addUser(User user);
+    Amount getAmountByUId(long uid);
 }

@@ -51,7 +51,7 @@
         <h1><spring:message code="userCenter"/> —— <small>${userinfo.uName}</small></h1>
     </div>
     <nav style="text-align: right">
-        <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
+        <a class="btn btn-warning" href="<c:url value="/myProductPage?pageNow=1"/>"><spring:message code="back"/></a>
     </nav>
 
     <p class="lead"><spring:message code="personinfo"/></p>
@@ -65,12 +65,19 @@
                     <th><spring:message code="sex"/></th>
                     <th><spring:message code="address"/></th>
                     <th><spring:message code="phone"/></th>
+                    <th><spring:message code="TopUp"/></th>
+                    <th><spring:message code="operation"/></th>
                 </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            <input type="number" name="sex" class="form-control" id="sex" placeholder="${userinfo.sex}">
+                            <c:if test="${userinfo.sex == 0}">
+                                <input type="number" name="sex" class="form-control" id="sex" placeholder="<spring:message code="woman"/>">
+                            </c:if>
+                            <c:if test="${userinfo.sex == 1}">
+                                <input type="number" name="sex" class="form-control" id="sex" placeholder="<spring:message code="man"/>">
+                            </c:if>
                         </td>
                         <td>
                             <input type="text" name="address" class="form-control" id="address" placeholder="${userinfo.address}">
@@ -78,14 +85,17 @@
                         <td>
                             <input type="text" name="phone" class="form-control" id="phone" placeholder="${userinfo.phone}">
                         </td>
+                        <td>
+                            <input type="text" name="topup" class="form-control" id="topup" placeholder="${nowMoney}">
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-success"><spring:message code="save"/></button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div><br>
-        <nav style="text-align: right">
-        <button type="submit" class="btn btn-success"><spring:message code="save"/></button>
-        </nav>
+    </div>
     </form>
 
     <br><br>

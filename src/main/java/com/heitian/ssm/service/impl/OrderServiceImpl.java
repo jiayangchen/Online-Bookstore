@@ -1,7 +1,9 @@
 package com.heitian.ssm.service.impl;
 
+import com.heitian.ssm.dao.AmountDao;
 import com.heitian.ssm.dao.OrderDao;
 import com.heitian.ssm.dao.UserDao;
+import com.heitian.ssm.model.Amount;
 import com.heitian.ssm.model.Order;
 import com.heitian.ssm.model.User;
 import com.heitian.ssm.service.OrderService;
@@ -22,11 +24,18 @@ public class OrderServiceImpl implements OrderService{
     private OrderDao orderDao;
     @Resource
     private UserDao userDao;
+    @Resource
+    private AmountDao amountDao;
 
     @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     @CacheEvict(value = {"getAllOrder"}, allEntries = true)
     public void addOrder(Order order) {
-        this.orderDao.addOrder(order);
+        synchronized (Order.class){
+            Amount amount = amountDao.getAmountByUId(order.getOuid());
+            amount.setAmount(amount.getAmount() - order.getO_amount());
+            this.amountDao.updateAmount(amount);
+            this.orderDao.addOrder(order);
+        }
     }
 
     @Transactional(propagation=Propagation.REQUIRED,rollbackForClassName="Exception")

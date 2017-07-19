@@ -96,7 +96,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <button class="btn btn-success"><spring:message code="submitcart"/></button>
             <a class="btn btn-danger" href="<c:url value="/resetCart"/>"><spring:message code="resetcart"/></a>
-            <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
+            <a class="btn btn-warning" href="<c:url value="/myProductPage?pageNow=1"/>"><spring:message code="back"/></a>
         </div>
         </nav>
     </form>

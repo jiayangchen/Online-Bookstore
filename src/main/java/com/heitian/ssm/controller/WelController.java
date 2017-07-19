@@ -300,6 +300,7 @@ public class WelController {
             model.addAttribute("orderlist", cart.getContens());
             session.setAttribute("orderCode", orderCode);
             model.addAttribute("orderCode",orderCode);
+            model.addAttribute("totalPrice",totalAmount);
             return "orderProcess";
         }
     }

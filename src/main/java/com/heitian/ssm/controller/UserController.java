@@ -1,5 +1,7 @@
 package com.heitian.ssm.controller;
 
+import com.heitian.ssm.dao.AmountDao;
+import com.heitian.ssm.model.Amount;
 import com.heitian.ssm.model.OrderItem;
 import com.heitian.ssm.model.User;
 import com.heitian.ssm.service.OrderItemService;
@@ -28,7 +30,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private OrderService orderService;
-
+    @Autowired
+    private AmountDao amountDao;
 
     @RequestMapping("/showUser")
     public String showUser(HttpServletRequest request, Model model){
@@ -46,6 +49,8 @@ public class UserController {
         User user = userService.getUserByName(username);
         model.addAttribute("userinfo",user);
         model.addAttribute("orderhistory",orderService.getOrderByName(username));
+        Amount amount = userService.getAmountByUId(user.getUid());
+        model.addAttribute("nowMoney",amount.getAmount());
         return "user/usercenter";
     }
 
@@ -53,8 +58,9 @@ public class UserController {
     public String updatePerson(@RequestParam(value="sex") String sex,
                                @RequestParam(value="address") String address,
                                @RequestParam(value="phone") String phone,
+                               @RequestParam(value = "topup") String topup,
                                HttpServletRequest request){
-        log.info(sex + " " + address + " " + phone);
+        log.info(topup);
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("sess_username");
         User user = userService.getUserByName(username);
@@ -66,6 +72,11 @@ public class UserController {
         }
         if(!phone.isEmpty()){
             user.setPhone(Long.valueOf(phone));
+        }
+        if(!topup.isEmpty()){
+            Amount amount = userService.getAmountByUId(user.getUid());
+            amount.setAmount(amount.getAmount() + Double.valueOf(topup));
+            amountDao.updateAmount(amount);
         }
 
         userService.updateUser(user);

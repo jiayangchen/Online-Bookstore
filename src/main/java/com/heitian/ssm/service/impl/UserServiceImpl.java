@@ -1,6 +1,8 @@
 package com.heitian.ssm.service.impl;
 
+import com.heitian.ssm.dao.AmountDao;
 import com.heitian.ssm.dao.UserDao;
+import com.heitian.ssm.model.Amount;
 import com.heitian.ssm.model.User;
 import com.heitian.ssm.service.UserService;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,6 +20,8 @@ public class UserServiceImpl implements UserService {
     
     @Resource
     private UserDao userDao;
+    @Resource
+    private AmountDao amountDao;
 
     @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public User getUserByName(String userName) {
@@ -38,5 +42,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         userDao.addUser(user);
+    }
+
+    @Override
+    public Amount getAmountByUId(long uid) {
+        return amountDao.getAmountByUId(uid);
     }
 }

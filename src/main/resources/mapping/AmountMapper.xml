@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.heitian.ssm.dao.AmountDao">
+
+    <resultMap id="AmountBaseMap" type="com.heitian.ssm.model.Amount">
+        <id column="mid" property="mid" jdbcType="BIGINT"/>
+        <result column="uid" property="uid" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <update id="updateAmount" parameterType="com.heitian.ssm.model.Amount">
+        UPDATE t_money
+        SET amount = #{amount}
+        WHERE uid = #{uid}
+    </update>
+
+    <select id="getAmountByUId" resultMap="AmountBaseMap">
+        SELECT * FROM t_money
+        WHERE uid = #{0}
+    </select>
+</mapper>

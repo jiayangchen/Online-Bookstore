@@ -50,7 +50,7 @@
     </div>
     <p class="lead"><spring:message code="ordercode"/>：${orderCode}</p>
     <p class="lead"><spring:message code="buyername"/>：${ordername} <spring:message code="buyeraddr"/>: ${orderaddress}</p>
-
+    <p class="lead"><spring:message code="totalPrice"/>：￥ ${totalPrice}</p>
     <br>
 
     <div class="row">
@@ -84,7 +84,7 @@
     <br><br><br>
     <nav style="text-align: right">
     <a class="btn btn-primary" href="<c:url value="/updateOrderStatus"/>"><spring:message code="pay"/></a>
-    <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
+    <a class="btn btn-warning" href="<c:url value="/myProductPage?pageNow=1"/>"><spring:message code="back"/></a>
     </nav>
 </div>
 
