@@ -268,13 +268,21 @@ public class WelController {
 
             for (Book book : cart.getContens()) {
                 int buyNum = cartList.fetchWithDefault(book.getBid(), 0);
-                book.setbQuantity(buyNum);
+                //book.setbQuantity(buyNum);
+
                 if (book.getbQuantity() < buyNum) {
                     buyNum = book.getbQuantity();
                 }
+
                 totalAmount += book.getbPrice() * buyNum;
-                bookService.updateBookStock(book.getBid(), book.getbQuantity() - buyNum);
-                bookService.updateBookCNStock(book.getBid(), book.getbQuantity() - buyNum);
+
+                int stock = book.getbQuantity() - buyNum;
+
+                if(session.getAttribute("langType").equals("zh")){
+                    bookService.updateBookCNStock(book.getBid(), stock);
+                }else {
+                    bookService.updateBookStock(book.getBid(), stock);
+                }
 
                 OrderItem ot = new OrderItem();
                 ot.setO_code(orderCode);
@@ -289,10 +297,12 @@ public class WelController {
             JSONObject orderJSON = new JSONObject();
             orderJSON.put("ocode", orderCode);
             orderJSON.put("ouid", user.getUid());
-            orderJSON.put("opid", 0);
+            orderJSON.put("opid", 7);
             orderJSON.put("o_create_time", tp);
             orderJSON.put("o_status", 1); // 已提交
             orderJSON.put("o_amount", totalAmount);
+
+            //send order
             productService.sendMessage(destination, orderJSON.toString());
 
             model.addAttribute("ordername", username);

@@ -49,7 +49,8 @@
     <div class="page-header">
         <h1>Message:${WUP}
             Message:${AL}
-            Message:${OTHER}</h1>
+            Message:${OTHER}
+        </h1>
     </div>
     <p class="lead">I'm so sorry that you are refused to visit this page!</p>
     <a class="btn btn-warning" href="<c:url value="logout"/>">Back To Login</a>

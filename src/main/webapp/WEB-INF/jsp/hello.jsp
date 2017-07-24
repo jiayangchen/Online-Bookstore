@@ -62,7 +62,7 @@
                 <span class="icon-bar"></span>
             </button>
             <c:if test="${! empty username}">
-                <a class="navbar-brand" href="#">Hello ${username}</a>
+                <a class="navbar-brand" href="#"> Hello ${username} </a>
             </c:if>
         </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -85,7 +85,6 @@
                     </div>
                     <button type="submit" class="btn btn-default"><spring:message code="search"/></button>
                 </form>
-
                 <form class="navbar-form navbar-right">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default"><spring:message code="category"/></button>

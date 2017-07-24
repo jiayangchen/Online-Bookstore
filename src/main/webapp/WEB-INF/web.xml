@@ -7,6 +7,11 @@
 
     <display-name>web-ssm</display-name>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/refuse.jsp</location>
+    </error-page>
+
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>classpath:log4j.properties</param-value>

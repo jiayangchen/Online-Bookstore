@@ -54,7 +54,7 @@
     <update id="updateBookCN" parameterType="com.heitian.ssm.model.Book">
         UPDATE bookcn
         SET BookName = #{bName},Author = #{bAuthor}, Category = #{bCategory},
-        Price = #{bPrice}, Quantity = #{bQuantity}, Discr = #{bDiscr}
+        Price = #{bPrice}, Quantity = #{bQuantity}, Discr = #{bDiscr}, isSold = #{isSold},isEnglish = #{isEnglish}
         WHERE BookID = #{bid}
     </update>
 
@@ -90,4 +90,14 @@
     <select id="getProductsCount" resultType="long">
         SELECT COUNT(*) FROM book WHERE isSold = 1
     </select>
+
+    <delete id="deleteBook" parameterType="java.lang.Long">
+        DELETE FROM book
+        WHERE BookID = #{0}
+    </delete>
+
+    <delete id="deleteBookCN" parameterType="java.lang.Long">
+        DELETE FROM bookcn
+        WHERE BookID = #{0}
+    </delete>
 </mapper>

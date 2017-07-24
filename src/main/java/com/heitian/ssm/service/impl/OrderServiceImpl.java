@@ -10,6 +10,7 @@ import com.heitian.ssm.service.OrderService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class,timeout = 1,isolation= Isolation.DEFAULT)
 public class OrderServiceImpl implements OrderService{
 
     @Resource

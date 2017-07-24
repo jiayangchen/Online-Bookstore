@@ -16,11 +16,14 @@ public class ConsumerMessageListener implements MessageListener {
 
         TextMessage textMsg = (TextMessage) message;
         System.out.println("receive a order");
+
         try {
+
             String orderStr = textMsg.getText();
             Order order = JSON.parseObject(orderStr,Order.class);
             orderService.addOrder(order);
             System.out.println("order has been added");
+
         } catch (JMSException e) {
             e.printStackTrace();
         }

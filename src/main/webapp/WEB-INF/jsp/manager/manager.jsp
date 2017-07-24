@@ -139,7 +139,7 @@
             <a class="btn btn-primary" href="<c:url value="/productManagement?type=en"/>">English</a>
         </nav><br>
 
-
+    <form action="<c:url value="/updateBook"/>" method="post">
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered">
@@ -159,7 +159,7 @@
                     </thead>
                     <tbody>
                     <c:forEach var="book" items="${productList}" varStatus="status">
-                        <form action="<c:url value="/updateBook"/>" method="post">
+                        <%--<form action="<c:url value="/updateBook"/>" method="post">--%>
                         <tr>
                             <td>${status.index+1}
                                 <input type="hidden" name="isEnglish" value="${langType}">
@@ -185,23 +185,34 @@
                             <td>
                                 <c:if test="${book.isSold == 0}">
                                     <form action="<c:url value="/putOnMarket"/>" method="post">
-                                        <button value="${book.bid}" name="bid" type="submit" class="btn btn-primary"><spring:message code="market"/></button>
+                                        <input type="hidden" name="isEnglish" value="${langType}">
+                                        <button value="${book.bid}" name="putOnMarket" type="submit" class="btn btn-primary"><spring:message code="market"/></button>
                                     </form>
                                 </c:if>
                                 <c:if test="${book.isSold == 1}">
-                                    <button value="${book.bid}" name="isSold" type="button" class="btn btn-warning"><spring:message code="nomarket"/></button>
+                                    <form action="<c:url value="/putDownMarket"/>" method="post">
+                                        <input type="hidden" name="isEnglish" value="${langType}">
+                                        <button value="${book.bid}" name="putDownMarket" type="submit" class="btn btn-warning"><spring:message code="nomarket"/></button>
+                                    </form>
                                 </c:if>
                             </td>
-                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-success"><spring:message code="save"/></button></td>
-                            <td><button value="${book.bid}" name="upbookid" type="submit" class="btn btn-danger"><spring:message code="delete"/></button></td>
+                            <td>
+                                <button value="${book.bid}" name="upbookid" type="submit" class="btn btn-success"><spring:message code="save"/></button>
+                            </td>
+                            <td>
+                                <form action="<c:url value="/deleteBook"/>" method="post">
+                                    <input type="hidden" name="isEnglish" value="${langType}">
+                                    <button value="${book.bid}" name="deleteBook" type="submit" class="btn btn-danger"><spring:message code="delete"/></button>
+                                </form>
+                            </td>
                         </tr>
-                        </form>
+                        <%--</form>--%>
                     </c:forEach>
                     </tbody>
                 </table>
             </div>
         </div>
-
+    </form>
     </c:if>
 </div>
 

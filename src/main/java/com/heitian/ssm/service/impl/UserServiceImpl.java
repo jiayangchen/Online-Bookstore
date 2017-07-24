@@ -8,6 +8,7 @@ import com.heitian.ssm.service.UserService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class,timeout = 1,isolation = Isolation.DEFAULT)
 public class UserServiceImpl implements UserService {
     
     @Resource
@@ -23,12 +24,12 @@ public class UserServiceImpl implements UserService {
     @Resource
     private AmountDao amountDao;
 
-    @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
+    @Transactional(readOnly=true)
     public User getUserByName(String userName) {
         return userDao.selectUserByName(userName);
     }
 
-    @Transactional(propagation=Propagation.REQUIRED,rollbackForClassName="Exception")
+    @Transactional(readOnly=true)
     public List<User> getAllUser() {
         return userDao.selectAllUser();
     }
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly=true)
     public Amount getAmountByUId(long uid) {
         return amountDao.getAmountByUId(uid);
     }

@@ -152,6 +152,7 @@
                     <th><spring:message code="orderstatus"/></th>
                     <th><spring:message code="orderdetails"/></th>
                     <th><spring:message code="operation"/></th>
+                    <th><spring:message code="pay"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -191,6 +192,16 @@
                                 </c:if>
                                 <c:if test="${order.o_status != 1}">
                                     <button type="button" class="btn btn-primary" disabled="disabled" data-bid="${order.ocode}"><spring:message code="cancelOrder"/></button>
+                                </c:if>
+                            </td>
+                            <td>
+                                <c:if test="${order.o_status == 1}">
+                                    <form action="<c:url value="/payWhenSubmitted"/>" method="post">
+                                        <button type="submit" name="payOrder" class="btn btn-success btn-order-cancel" value="${order.ocode}"><spring:message code="pay"/></button>
+                                    </form>
+                                </c:if>
+                                <c:if test="${order.o_status != 1}">
+                                    <button type="button" class="btn btn-success" disabled="disabled" data-bid="${order.ocode}"><spring:message code="pay"/></button>
                                 </c:if>
                             </td>
                         </tr>

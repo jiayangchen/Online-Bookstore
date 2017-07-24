@@ -88,7 +88,7 @@
         </div>
     </div>
     <nav style="text-align: right">
-    <a class="btn btn-warning" href="<c:url value="/back"/>"><spring:message code="back"/></a>
+    <a class="btn btn-warning" href="<c:url value="/myProductPage?pageNow=1"/>"><spring:message code="back"/></a>
     </nav><br><br>
 </div>
 

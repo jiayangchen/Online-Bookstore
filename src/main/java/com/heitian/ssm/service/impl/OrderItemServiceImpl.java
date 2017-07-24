@@ -4,6 +4,7 @@ import com.heitian.ssm.dao.OrderItemDao;
 import com.heitian.ssm.model.OrderItem;
 import com.heitian.ssm.service.OrderItemService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,11 @@ import java.util.List;
  */
 
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class,timeout = 1,isolation= Isolation.DEFAULT)
 public class OrderItemServiceImpl implements OrderItemService {
 
     @Resource
-    OrderItemDao orderItemDao;
+    private OrderItemDao orderItemDao;
 
     @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public void addOrderItem(OrderItem orderItem) {
@@ -27,6 +28,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
+    @Transactional(readOnly=true)
     public List<OrderItem> selectOrderItemByOCode(String ocode) {
         return orderItemDao.selectOrderItemByOCode(ocode);
     }

@@ -27,4 +27,7 @@ public interface BookDao {
     List<Book> selectBookCNByPage(int startPos, int pageSize);
 
     long getProductsCount();
+
+    void deleteBook(long bid);
+    void deleteBookCN(long bid);
 }

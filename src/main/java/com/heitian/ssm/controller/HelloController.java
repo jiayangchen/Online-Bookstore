@@ -1,10 +1,10 @@
 package com.heitian.ssm.controller;
 
-import com.heitian.ssm.model.Book;
-import com.heitian.ssm.model.Order;
-import com.heitian.ssm.model.Provided;
-import com.heitian.ssm.model.User;
+import com.heitian.ssm.dao.AmountDao;
+import com.heitian.ssm.dao.BookDao;
+import com.heitian.ssm.model.*;
 import com.heitian.ssm.service.BookService;
+import com.heitian.ssm.service.OrderItemService;
 import com.heitian.ssm.service.OrderService;
 import com.heitian.ssm.service.UserService;
 import org.apache.log4j.Logger;
@@ -34,6 +34,12 @@ public class HelloController {
     private UserService userService;
     @Autowired
     private BookService bookService;
+    @Autowired
+    private AmountDao amountDao;
+    @Autowired
+    private OrderItemService orderItemService;
+    @Autowired
+    private BookDao bookDao;
 
     @RequestMapping("/acceptOrder")
     public String acceptOrder(@RequestParam("acceptOrder") String ocode,
@@ -55,6 +61,39 @@ public class HelloController {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("sess_username");
         orderService.updateOrderStatus(ocode,4);
+        Order order = orderService.getOrderByCode(ocode);
+
+        //返还钱
+        Amount amount = amountDao.getAmountByUId(order.getOuid());
+        amount.setAmount(amount.getAmount() + order.getO_amount());
+        amountDao.updateAmount(amount);
+
+        //返还库存
+        List<OrderItem> list = orderItemService.selectOrderItemByOCode(ocode);
+        for(OrderItem ot : list){
+            if(session.getAttribute("langType").equals("zh")){
+                Book bookcn = bookService.getBookCNByBId(ot.getOt_bid());
+                bookService.updateBookCNStock(ot.getOt_bid(),bookcn.getbQuantity() + ot.getOt_quantity());
+            }else {
+                Book book = bookService.getBookByBId(ot.getOt_bid());
+                bookService.updateBookStock(ot.getOt_bid(), book.getbQuantity() + ot.getOt_quantity());
+            }
+        }
+
+        User user = userService.getUserByName(username);
+        model.addAttribute("userinfo",user);
+        model.addAttribute("orderhistory",orderService.getOrderByName(username));
+        model.addAttribute("nowMoney",amount.getAmount());
+        return "user/usercenter";
+    }
+
+    @RequestMapping("/payWhenSubmitted")
+    public String payWhenSubmitted(@RequestParam("payOrder") String ocode,
+                                   HttpServletRequest request,
+                                   Model model){
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("sess_username");
+        orderService.updateOrderStatus(ocode,2);
         User user = userService.getUserByName(username);
         model.addAttribute("userinfo",user);
         model.addAttribute("orderhistory",orderService.getOrderByName(username));
@@ -70,6 +109,24 @@ public class HelloController {
         orderService.updateOrderStatus(ocode,0);
         User user = userService.getUserByName(username);
         List<Order> orderListForProducer = orderService.getOrderByPId(user.getUid());
+        Order order = orderService.getOrderByCode(ocode);
+        //返还钱
+        Amount amount = amountDao.getAmountByUId(order.getOuid());
+        amount.setAmount(amount.getAmount() + order.getO_amount());
+        amountDao.updateAmount(amount);
+
+        //返还库存
+        List<OrderItem> list = orderItemService.selectOrderItemByOCode(ocode);
+        for(OrderItem ot : list){
+            if(session.getAttribute("langType").equals("zh")){
+                Book bookcn = bookService.getBookCNByBId(ot.getOt_bid());
+                bookService.updateBookCNStock(ot.getOt_bid(),bookcn.getbQuantity() + ot.getOt_quantity());
+            }else {
+                Book book = bookService.getBookByBId(ot.getOt_bid());
+                bookService.updateBookStock(ot.getOt_bid(), book.getbQuantity() + ot.getOt_quantity());
+            }
+        }
+
         model.addAttribute("orderList",orderListForProducer);
         return "manager/manager";
     }
@@ -122,13 +179,54 @@ public class HelloController {
         return null;
     }
 
-    @RequestMapping("/putOnMarket")
-    public String putOnMarket(@RequestParam("bid") Long id){
-        log.info(id);
-        Book book = bookService.getBookCNByBId(id);
-        book.setIsSold(1);
-        bookService.updateBookCN(book);
-        return "forward:/productManagement?type=zh";
+    @RequestMapping(value = "/putOnMarket",method= RequestMethod.POST)
+    public String putOnMarket(@RequestParam("putOnMarket") String id,
+                              @RequestParam("isEnglish") String isEnglish,
+                              HttpServletRequest request,
+                              Model model){
+        log.info(id + " " + isEnglish);
+        if(isEnglish.equals("zh")){
+            Book bookcn = bookService.getBookCNByBId(Long.valueOf(id));
+            bookcn.setIsSold(1);
+            bookService.updateBookCN(bookcn);
+            return "forward:/productManagement?type=zh";
+        }else{
+            Book book = bookService.getBookByBId(Long.valueOf(id));
+            book.setIsSold(1);
+            bookService.updateBook(book);
+            return "forward:/productManagement?type=en";
+        }
+    }
+
+    @RequestMapping(value = "/deleteBook",method= RequestMethod.POST)
+    public String deleteBook(@RequestParam("deleteBook") String id,
+                             @RequestParam("isEnglish") String isEnglish){
+        if(isEnglish.equals("zh")){
+            bookDao.deleteBookCN(Long.parseLong(id));
+            return "forward:/productManagement?type=zh";
+        }else{
+            bookDao.deleteBook(Long.parseLong(id));
+            return "forward:/productManagement?type=en";
+        }
+    }
+
+    @RequestMapping(value = "/putDownMarket",method= RequestMethod.POST)
+    public String putDownMarket(@RequestParam("putDownMarket") String id,
+                              @RequestParam("isEnglish") String isEnglish,
+                              HttpServletRequest request,
+                              Model model){
+        log.info(id + " " + isEnglish);
+        if(isEnglish.equals("zh")){
+            Book bookcn = bookService.getBookCNByBId(Long.valueOf(id));
+            bookcn.setIsSold(0);
+            bookService.updateBookCN(bookcn);
+            return "forward:/productManagement?type=zh";
+        }else{
+            Book book = bookService.getBookByBId(Long.valueOf(id));
+            book.setIsSold(0);
+            bookService.updateBook(book);
+            return "forward:/productManagement?type=en";
+        }
     }
 
     @RequestMapping(value = "/updateBook",method= RequestMethod.POST)
@@ -142,23 +240,28 @@ public class HelloController {
                              @RequestParam(value = "isEnglish",defaultValue = "zh") String isEnglish,
                              Model model){
 
-        log.info(bid + " " + bquan);
-
+        log.info(bid);
+        bname = bname.replace(",","");
+        bauthor = bauthor.replace(",","");
+        bcate = bcate.replace(",","");
+        bquan = bquan.replace(",","");
+        bprice = bprice.replace(",","");
+        bdescr = bdescr.replace(",","");
         Book book;
-        if(isEnglish.equals("zh")){
+        if(isEnglish.contains("zh")){
             book = bookService.getBookCNByBId(Long.valueOf(bid));
         }else{
             book = bookService.getBookByBId(Long.valueOf(bid));
         }
 
-        book.setbName(bname.isEmpty() ? book.getbName() : bname);
-        book.setbAuthor(bauthor.isEmpty() ? book.getbAuthor() : bauthor);
-        book.setbCategory(bcate.isEmpty() ? book.getbCategory() : bcate);
-        book.setbQuantity(bquan.isEmpty() ? book.getbQuantity() : Integer.valueOf(bquan));
-        book.setbPrice(bprice.isEmpty() ? book.getbPrice() : Double.valueOf(bprice));
-        book.setbDiscr(bdescr.isEmpty() ? book.getbDiscr() : bdescr);
+        book.setbName(bname.equals("") ? book.getbName() : bname);
+        book.setbAuthor(bauthor.equals("") ? book.getbAuthor() : bauthor);
+        book.setbCategory(bcate.equals("") ? book.getbCategory() : bcate);
+        book.setbQuantity(bquan.equals("") ? book.getbQuantity() : Integer.valueOf(bquan));
+        book.setbPrice(bprice.equals("") ? book.getbPrice() : Double.valueOf(bprice));
+        book.setbDiscr(bdescr.equals("") ? book.getbDiscr() : bdescr);
 
-        if(isEnglish.equals("zh")){
+        if(isEnglish.contains("zh")){
             bookService.updateBookCN(book);
             return "forward:/productManagement?type=zh";
         }else{
